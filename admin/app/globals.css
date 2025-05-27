@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-    --font-display: 'Inter',
+    --highlight: #2E3139;
+    --baselight: #425583;
+    --borderstroke: #CBD5E1;
+    --underlight: #898989;
+    --buttoncolor: #696969;
+    --darkprimary: #6EC9F0;
+    --font-display: 'Inter';
 }
