@@ -1,0 +1,119 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Coordinates {
+  lng: Float!
+  lat: Float!
+}
+
+type Address {
+  type: AddressType!
+  coordinates: Coordinates!
+}
+
+enum AddressType {
+  HOME
+  CUSTOM
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  role: UserRole!
+  phone: String
+  emailVerified: Boolean!
+  phoneVerified: Boolean!
+  address: [Address!]
+  bussinessRegNo: String
+  refreshToken: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+  VENDOR
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type Zone {
+  id: ID!
+  name: String!
+  description: String
+  polygon: String!
+  userId: String!
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Query {
+  users: [User!]!
+  user(id: String!): User!
+  zones: [Zone!]!
+  zone(id: String!): Zone!
+}
+
+type Mutation {
+  login(loginInput: LoginInput!): AuthResponse!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+  createZone(createZoneInput: CreateZoneInput!): Zone!
+  updateZone(updateZoneInput: UpdateZoneInput!): Zone!
+  removeZone(id: String!): Zone!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+  role: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  password: String
+  role: String
+  id: String!
+}
+
+input CreateZoneInput {
+  name: String!
+  description: String
+  polygon: JSON!
+  userId: String!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+input UpdateZoneInput {
+  name: String
+  description: String
+  polygon: JSON
+  userId: String
+  id: Int!
+}
