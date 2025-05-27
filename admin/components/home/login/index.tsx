@@ -7,6 +7,7 @@ import CustomButton from "@/components/common/buttons";
 import Google_Icon from "@/assets/google.png";
 import logo from "@/assets/Logo.png";
 import loginsvg from "@/assets/loginsvg.svg";
+import CustomSvg from "@/assets/TempSvg";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -23,15 +24,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="py-9 px-8 h-screen grid grid-cols-2 gap-4">
+    <div className=" px-8 h-screen grid grid-cols-2 gap-4">
       {/* Image section */}
-      <div className="h-[730px] pb-8">
+      <div className="h-screen pb-8">
         <div
-          className=" flex flex-col justify-between px-20 py-12 text-white w-full h-full bg-no-repeat bg-contain bg-right"
-          style={{
-            backgroundImage: `url(${loginsvg.src})`,
-          }}
+          className="relative flex flex-col justify-between my-8 px-20 text-white w-full h-full"
         >
+        <div className="absolute left-0 right-0 bottom-0 top-2 -z-10"><CustomSvg/></div>
+
           {/* Heading */}
           <div className="mt-10">
             <h1 className="text-6xl text-white font-bold leading-snug font-display">
