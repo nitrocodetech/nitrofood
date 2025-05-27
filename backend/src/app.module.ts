@@ -14,7 +14,9 @@ import { ZoneModule } from './zone/zone.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      playground: true,
+      sortSchema: true,
+      playground: true, // required for in-browser GUI
+      introspection: true, // needed for Postman or GraphQL clients to fetch schema
     }),
 
     AuthModule,

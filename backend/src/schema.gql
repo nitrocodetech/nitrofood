@@ -2,34 +2,102 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Coordinates {
-  lng: Float!
-  lat: Float!
-}
-
 type Address {
-  type: AddressType!
   coordinates: Coordinates!
+  type: AddressType!
 }
 
 enum AddressType {
-  HOME
   CUSTOM
+  HOME
+}
+
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type Coordinates {
+  lat: Float!
+  lng: Float!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  password: String!
+  role: String!
+}
+
+input CreateZoneInput {
+  description: String
+  name: String!
+  polygon: JSON!
+  userId: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  createZone(createZoneInput: CreateZoneInput!): Zone!
+  login(loginInput: LoginInput!): AuthResponse!
+  removeUser(id: String!): User!
+  removeZone(id: String!): Zone!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  updateZone(updateZoneInput: UpdateZoneInput!): Zone!
+}
+
+type Query {
+  user(id: String!): User!
+  users: [User!]!
+  zone(id: String!): Zone!
+  zones: [Zone!]!
+}
+
+input UpdateUserInput {
+  email: String
+  id: String!
+  name: String
+  password: String
+  role: String
+}
+
+input UpdateZoneInput {
+  description: String
+  id: Int!
+  name: String
+  polygon: JSON
+  userId: String
 }
 
 type User {
-  id: ID!
-  name: String!
-  email: String!
-  password: String!
-  role: UserRole!
-  phone: String
-  emailVerified: Boolean!
-  phoneVerified: Boolean!
   address: [Address!]
   bussinessRegNo: String
-  refreshToken: String
   createdAt: DateTime!
+  email: String!
+  emailVerified: Boolean!
+  id: ID!
+  name: String!
+  password: String!
+  phone: String
+  phoneVerified: Boolean!
+  refreshToken: String
+  role: UserRole!
   updatedAt: DateTime!
 }
 
@@ -39,81 +107,13 @@ enum UserRole {
   VENDOR
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type AuthResponse {
-  accessToken: String!
-  refreshToken: String!
-  user: User!
-}
-
 type Zone {
+  createdAt: DateTime!
+  description: String
   id: ID!
   name: String!
-  description: String
   polygon: String!
-  userId: String!
-  user: User!
-  createdAt: DateTime!
   updatedAt: DateTime!
-}
-
-type Query {
-  users: [User!]!
-  user(id: String!): User!
-  zones: [Zone!]!
-  zone(id: String!): Zone!
-}
-
-type Mutation {
-  login(loginInput: LoginInput!): AuthResponse!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: String!): User!
-  createZone(createZoneInput: CreateZoneInput!): Zone!
-  updateZone(updateZoneInput: UpdateZoneInput!): Zone!
-  removeZone(id: String!): Zone!
-}
-
-input LoginInput {
-  email: String!
-  password: String!
-}
-
-input CreateUserInput {
-  name: String!
-  email: String!
-  password: String!
-  role: String!
-}
-
-input UpdateUserInput {
-  name: String
-  email: String
-  password: String
-  role: String
-  id: String!
-}
-
-input CreateZoneInput {
-  name: String!
-  description: String
-  polygon: JSON!
+  user: User!
   userId: String!
-}
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
-
-input UpdateZoneInput {
-  name: String
-  description: String
-  polygon: JSON
-  userId: String
-  id: Int!
 }
