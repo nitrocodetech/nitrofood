@@ -1,10 +1,13 @@
-// LoginPage.tsx
 "use client";
 import React, { useState } from "react";
 import FormPage from "./login/FormPage";
 import LoginIllustration from "./login/LoginIllustration";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "@/libs/graphql/mutations/auth";
 
 const LoginPage = () => {
+  const [login, { data, loading, error }] = useMutation(LOGIN);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,11 +20,19 @@ const LoginPage = () => {
       [name]: value,
     }));
   };
-
+  const handleLogin = () => {
+    login({ variables: { loginInput: formData } });
+  };
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
   return (
     <div className="px-8 h-screen grid grid-cols-2 gap-4">
       <LoginIllustration />
-      <FormPage formData={formData} handleOnChange={handleOnChange} />
+      <FormPage
+        formData={formData}
+        handleOnChange={handleOnChange}
+        handler={handleLogin}
+      />
     </div>
   );
 };

@@ -12,9 +12,14 @@ interface FormPageProps {
     password: string;
   };
   handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handler: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const FormPage: React.FC<FormPageProps> = ({ formData, handleOnChange }) => {
+const FormPage: React.FC<FormPageProps> = ({
+  formData,
+  handleOnChange,
+  handler,
+}) => {
   return (
     <div className="py-8">
       <div className="flex items-center justify-end mb-16 pr-12 mt-3">
@@ -72,6 +77,7 @@ const FormPage: React.FC<FormPageProps> = ({ formData, handleOnChange }) => {
               color="text-white"
               backgroundColor="bg-(--darkprimary)"
               otherClasses="h-[44px] rounded-lg"
+              handleOnClick={handler}
             />
 
             <div className="flex items-center gap-2 w-full">
