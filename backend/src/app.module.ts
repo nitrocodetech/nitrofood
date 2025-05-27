@@ -16,7 +16,7 @@ import { ZoneModule } from './zone/zone.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       playground: true, // required for in-browser GUI
-      introspection: process.env.NODE_ENV === 'production', // needed for Postman or GraphQL clients to fetch schema
+      introspection: true, // needed for Postman or GraphQL clients to fetch schema
     }),
 
     AuthModule,
