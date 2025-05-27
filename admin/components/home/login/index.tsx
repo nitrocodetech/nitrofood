@@ -26,11 +26,11 @@ const LoginPage = () => {
   return (
     <div className=" px-8 h-screen grid grid-cols-2 gap-4">
       {/* Image section */}
-      <div className="h-screen pb-8">
+      <div className="h-screen py-8">
         <div
-          className="relative flex flex-col justify-between my-8 px-20 text-white w-full h-full"
+          className="relative flex flex-col justify-between py-8 px-20 text-white w-full h-full"
         >
-        <div className="absolute left-0 right-0 bottom-0 top-2 -z-10"><CustomSvg/></div>
+        <div className="absolute inset-0 -z-10 w-full h-full"><CustomSvg/></div>
 
           {/* Heading */}
           <div className="mt-10">
