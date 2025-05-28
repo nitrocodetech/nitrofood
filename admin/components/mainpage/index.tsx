@@ -2,11 +2,18 @@ import React from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
 
-const MainPage = () => {
+type Props = {
+  children: React.ReactNode;
+};
+
+const MainPage = ({ children }: Props) => {
   return (
     <div className="flex">
       <Sidebar />
-      <Navbar />
+      <div className="flex-1">
+        <Navbar />
+        <main>{children}</main> {/* Render the children here */}
+      </div>
     </div>
   );
 };

@@ -1,22 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import LoginPage from "@/components/home";
+import MainPage from "@/components/mainpage";
 
-export default function Home() {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (token) {
-      router.push("/dashboard"); // Redirect if logged in
+    if (!token) {
+      router.push("/"); // redirect to login if not logged in
     } else {
-      setIsLoggedIn(false);
+      setIsLoggedIn(true);
     }
   }, []);
 
   if (isLoggedIn === null) return null;
 
-  return <LoginPage />;
+  return <MainPage>{children}</MainPage>;
 }

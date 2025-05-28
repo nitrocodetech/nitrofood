@@ -24,22 +24,23 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const { data } = await login({
+      const response = await login({
         variables: {
           loginInput: formData,
         },
       });
 
-      // Assuming the response has a structure like: data.login.user
-      const user = data?.login?.user;
-      const token = data?.login?.token;
+      const accessToken = response?.data?.login?.accessToken;
+      const refreshToken = response?.data?.login?.refreshToken;
+      const user = response?.data?.login?.user;
 
-      if (user && token) {
+      if (accessToken && user) {
         toast.success("Login successful!");
-        localStorage.setItem("token", token);
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("user", JSON.stringify(user));
       } else {
-        toast.error("Login failed: Missing user data.");
+        toast.error("Login failed: Missing token or user data.");
       }
     } catch (err: any) {
       const message =
@@ -47,6 +48,7 @@ const LoginPage = () => {
       toast.error(message);
     }
   };
+
   return (
     <div className="px-8 h-screen grid grid-cols-2 gap-4">
       <LoginIllustration />
