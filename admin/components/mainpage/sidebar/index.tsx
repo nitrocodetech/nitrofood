@@ -1,0 +1,74 @@
+import React, { JSX } from "react";
+import Image from "next/image";
+import Link from "next/link";
+
+// Assets
+import Logo from "@/assets/nitro-logo.png";
+import {
+  BadgeDollarSign,
+  Banknote,
+  Bike,
+  Images,
+  ShoppingBasket,
+  SlidersHorizontal,
+  Store,
+  TicketPercent,
+  Users,
+  Frame,
+} from "lucide-react";
+
+// Sidebar item type
+type SidebarItem = {
+  name: string;
+  icon: JSX.Element;
+  link: string;
+};
+
+// Sidebar items array
+const sidebarItems: SidebarItem[] = [
+  { name: "Dashboard", icon: <Frame size={20} />, link: "/dashboard" },
+  { name: "Users", icon: <Users size={20} />, link: "/users" },
+  { name: "Vendors", icon: <Store size={20} />, link: "/vendors" },
+  { name: "Riders", icon: <Bike size={20} />, link: "/riders" },
+  { name: "Products", icon: <ShoppingBasket size={20} />, link: "/products" },
+  { name: "Orders", icon: <BadgeDollarSign size={20} />, link: "/orders" },
+  { name: "Banners", icon: <Images size={20} />, link: "/banners" },
+  { name: "Coupons", icon: <TicketPercent size={20} />, link: "/coupons" },
+  { name: "Tip", icon: <Banknote size={20} />, link: "/tips" },
+  {
+    name: "Management",
+    icon: <SlidersHorizontal size={20} />,
+    link: "/management",
+  },
+];
+
+const Sidebar: React.FC = () => {
+  return (
+    <div className="w-[20%] flex flex-col gap-18 px-[23px] h-screen pt-8 border border-gray-200">
+      {/* Logo */}
+      <div className="flex justify-center">
+        <Image src={Logo} alt="Logo" width={180} height={24} />
+      </div>
+
+      {/* Sidebar items */}
+      <nav className="flex flex-col gap-3">
+        {sidebarItems.map((item, index) => (
+          <Link
+            href={item.link}
+            key={index}
+            className="group flex items-center gap-4 px-5 py-2 hover:bg-(--darkprimary) hover:text-white rounded-md text-[--sidebartext] transition"
+          >
+            <span className="text-gray-500 group-hover:text-white transition">
+              {item.icon}
+            </span>
+            <span className="text-sm font-medium font-display">
+              {item.name}
+            </span>
+          </Link>
+        ))}
+      </nav>
+    </div>
+  );
+};
+
+export default Sidebar;
