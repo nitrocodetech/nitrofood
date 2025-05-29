@@ -1,8 +1,11 @@
+"use client";
+
 import React, { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-// Assets
+// Assets & Icons
 import Logo from "@/assets/nitro-logo.png";
 import {
   BadgeDollarSign,
@@ -15,18 +18,18 @@ import {
   TicketPercent,
   Users,
   Frame,
+  Map,
 } from "lucide-react";
 
-// Sidebar item type
 type SidebarItem = {
   name: string;
   icon: JSX.Element;
   link: string;
 };
 
-// Sidebar items array
 const sidebarItems: SidebarItem[] = [
   { name: "Dashboard", icon: <Frame size={20} />, link: "/dashboard" },
+  { name: "Zone", icon: <Map size={20} />, link: "/zone" },
   { name: "Users", icon: <Users size={20} />, link: "/users" },
   { name: "Vendors", icon: <Store size={20} />, link: "/vendors" },
   { name: "Riders", icon: <Bike size={20} />, link: "/riders" },
@@ -43,29 +46,43 @@ const sidebarItems: SidebarItem[] = [
 ];
 
 const Sidebar: React.FC = () => {
+  const pathname = usePathname(); // 👈 current route path
+
   return (
-    <div className="w-[20%] flex flex-col gap-18 px-[23px] h-screen pt-8 border border-gray-200">
-      {/* Logo */}
+    <div className="w-[20%] flex flex-col gap-10 px-[23px] h-screen pt-8 border border-gray-200">
       <div className="flex justify-center">
         <Image src={Logo} alt="Logo" width={180} height={24} />
       </div>
 
-      {/* Sidebar items */}
       <nav className="flex flex-col gap-3">
-        {sidebarItems.map((item, index) => (
-          <Link
-            href={item.link}
-            key={index}
-            className="group flex items-center gap-4 px-5 py-2 hover:bg-(--darkprimary) hover:text-white rounded-md text-[--sidebartext] transition"
-          >
-            <span className="text-gray-500 group-hover:text-white transition">
-              {item.icon}
-            </span>
-            <span className="text-sm font-medium font-display">
-              {item.name}
-            </span>
-          </Link>
-        ))}
+        {sidebarItems.map((item, index) => {
+          const isActive = pathname.startsWith(item.link);
+
+          return (
+            <Link
+              href={item.link}
+              key={index}
+              className={`group flex items-center gap-4 px-5 py-2 hover:bg-(--darkprimary) rounded-md text-sm font-medium font-display transition
+                ${
+                  isActive
+                    ? "bg-(--darkprimary) text-white"
+                    : "text-(--sidebartext) hover:bg-[--darkprimary] hover:text-white"
+                }
+              `}
+            >
+              <span
+                className={`${
+                  isActive
+                    ? "text-white"
+                    : "text-gray-500 group-hover:text-white"
+                } transition`}
+              >
+                {item.icon}
+              </span>
+              <span>{item.name}</span>
+            </Link>
+          );
+        })}
       </nav>
     </div>
   );

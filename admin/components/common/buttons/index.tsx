@@ -25,7 +25,7 @@ const CustomButton: FC<CustomButtonProps> = ({
     <button
       className={`${color} ${
         disabled ? "bg-gray-800 cursor-not-allowed" : backgroundColor
-      } ${fontSize} rounded-button px-20 font-medium cursor-pointer ${otherClasses}`}
+      } ${fontSize} rounded-button px-10 font-normal cursor-pointer ${otherClasses}`}
       type={type}
       onClick={handleOnClick}
       disabled={loading ? loading : disabled}

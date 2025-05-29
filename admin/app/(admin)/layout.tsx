@@ -14,7 +14,7 @@ export default function DashboardLayout({
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      router.push("/"); // redirect to login if not logged in
+      router.push("/");
     } else {
       setIsLoggedIn(true);
     }

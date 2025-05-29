@@ -10,7 +10,7 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      router.push("/dashboard"); // Redirect if logged in
+      router.push("/dashboard");
     } else {
       setIsLoggedIn(false);
     }

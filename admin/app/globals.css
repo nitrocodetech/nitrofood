@@ -11,6 +11,7 @@
     --buttoncolor: #696969;
     --darkprimary: #6EC9F0;
     --sidebartext: #667085;
+    --titlecolor: #1D1F2C;
     --font-display: 'Inter';
 }
 
@@ -122,10 +123,11 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground;
     }
 }
