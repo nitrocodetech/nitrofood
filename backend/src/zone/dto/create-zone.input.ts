@@ -7,7 +7,7 @@ export class CreateZoneInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  title: string;
 
   @Field({ nullable: true })
   @IsString()
@@ -16,8 +16,4 @@ export class CreateZoneInput {
 
   @Field(() => GraphQLJSON)
   polygon: any;
-
-  @Field()
-  @IsString()
-  userId: string;
 }

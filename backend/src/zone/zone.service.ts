@@ -9,29 +9,24 @@ export class ZoneService {
   constructor(private prisma: PrismaService) {}
 
   create(createZoneInput: CreateZoneInput) {
-    const { name, description, userId } = createZoneInput;
+    const { title, description } = createZoneInput;
 
     return this.prisma.zone.create({
       data: {
-        name,
+        title,
         description,
         polygon: createZoneInput.polygon as Prisma.InputJsonValue,
-        user: { connect: { id: userId } },
-      },
-      include: {
-        user: true,
       },
     });
   }
 
   findAll() {
-    return this.prisma.zone.findMany({ include: { user: true } });
+    return this.prisma.zone.findMany({});
   }
 
   findOne(id: string) {
     return this.prisma.zone.findUnique({
       where: { id },
-      include: { user: true },
     });
   }
 

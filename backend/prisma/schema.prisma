@@ -33,18 +33,13 @@ model User {
   refreshToken   String? // Optional, for login sessions
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  Zone           Zone[]
 }
 
 model Zone {
   id          String   @id @default(uuid())
-  name        String
+  title        String
   description String?
   polygon     Json
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  // 🔽 New relation
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
 }
