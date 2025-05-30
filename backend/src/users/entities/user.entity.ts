@@ -1,12 +1,12 @@
 import {
-  ObjectType,
-  Field,
-  ID,
-  Float,
-  registerEnumType,
-} from '@nestjs/graphql';
-
-// ---- Enums ----
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
+import GraphQLJSON from 'graphql-type-json';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -14,79 +14,58 @@ export enum UserRole {
   VENDOR = 'VENDOR',
 }
 
-export enum AddressType {
-  HOME = 'HOME',
-  CUSTOM = 'CUSTOM',
-}
-
-registerEnumType(UserRole, {
-  name: 'UserRole',
-});
-
-registerEnumType(AddressType, {
-  name: 'AddressType',
-});
-
-// ---- Nested Types ----
+registerEnumType(UserRole, { name: 'UserRole' });
 
 @ObjectType()
-class Coordinates {
-  @Field(() => Float)
-  lng: number;
-
-  @Field(() => Float)
-  lat: number;
-}
-
-@ObjectType()
-class Address {
-  @Field(() => AddressType)
-  type: AddressType;
-
-  @Field(() => Coordinates)
-  coordinates: Coordinates;
-}
-
-// ---- Main User Type ----
-
-@ObjectType()
+@Entity()
 export class User {
   @Field(() => ID)
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Field()
+  @Column()
   name: string;
 
   @Field()
+  @Column({ unique: true })
   email: string;
 
-  @Field()
+  @Column()
   password: string;
 
   @Field(() => UserRole)
+  @Column({ type: 'enum', enum: UserRole })
   role: UserRole;
 
   @Field({ nullable: true })
+  @Column({ nullable: true })
   phone?: string;
 
-  @Field(() => Boolean)
-  emailVerified: boolean = false;
+  @Field()
+  @Column({ default: false })
+  emailVerified: boolean;
 
-  @Field(() => Boolean)
-  phoneVerified: boolean = false;
+  @Field()
+  @Column({ default: false })
+  phoneVerified: boolean;
 
-  @Field(() => [Address], { nullable: true })
-  address?: Address[];
+  @Field(() => GraphQLJSON, { nullable: true })
+  @Column({ type: 'json', nullable: true })
+  address?: any;
 
   @Field({ nullable: true })
+  @Column({ nullable: true })
   bussinessRegNo?: string;
 
-  @Field({ nullable: true })
+  @Column({ nullable: true })
   refreshToken?: string;
 
   @Field()
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field()
+  @UpdateDateColumn()
   updatedAt: Date;
 }

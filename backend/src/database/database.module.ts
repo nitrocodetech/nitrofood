@@ -1,14 +1,24 @@
-import { Module } from '@nestjs/common';
-import { PrismaService } from './database.service';
+import { Module, Global } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { User } from 'src/users/entities/user.entity';
+import { Zone } from 'src/zone/entities/zone.entity';
 
-// @Golbal()
+@Global() // <-- This makes the module global
 @Module({
-  providers: [PrismaService],
-  /* 
-    this is necessary as export will enable access else if you import 
-    it will show error. We can't use it or either we can use @Golbal decorator as
-    shown above and can import in global module.
-  */
-  exports: [PrismaService],
+  imports: [
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        url: config.get<string>('DATABASE_URL'),
+        entities: [User, Zone],
+        synchronize: true, // ✅ this pushes entity changes to DB automatically
+      }),
+    }),
+  ],
+  exports: [TypeOrmModule],
 })
 export class DatabaseModule {}

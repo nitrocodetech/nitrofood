@@ -1,30 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { User } from '@prisma/client';
-import { PrismaService } from 'src/database/database.service';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
+  ) {}
 
-  create(data: CreateUserInput): Promise<User> {
-    return this.prisma.user.create({ data });
+  create(data: CreateUserInput) {
+    return this.userRepo.save(data);
   }
 
-  findAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
+  findAll() {
+    return this.userRepo.find();
   }
 
-  findOne(id: string): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { id } });
+  findOne(id: string) {
+    return this.userRepo.findOne({ where: { id } });
   }
 
-  update(id: string, data: UpdateUserInput): Promise<User> {
-    return this.prisma.user.update({ where: { id }, data });
+  update(id: string, data: UpdateUserInput) {
+    return this.userRepo.save({ ...data, id });
   }
 
-  remove(id: string): Promise<User> {
-    return this.prisma.user.delete({ where: { id } });
+  remove(id: string) {
+    return this.userRepo.delete(id);
   }
 }

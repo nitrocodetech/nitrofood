@@ -1,6 +1,14 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Float } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import GraphQLJSON from 'graphql-type-json';
+
+@InputType()
+export class GeoJsonPolygonInput {
+  @Field(() => String)
+  readonly type: 'Polygon'; // literal type
+
+  @Field(() => [[[Float]]])
+  readonly coordinates: number[][][];
+}
 
 @InputType()
 export class CreateZoneInput {
@@ -14,6 +22,6 @@ export class CreateZoneInput {
   @IsOptional()
   description?: string;
 
-  @Field(() => GraphQLJSON)
-  polygon: any;
+  @Field(() => GeoJsonPolygonInput)
+  location: GeoJsonPolygonInput;
 }

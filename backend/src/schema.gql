@@ -2,27 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Address {
-  coordinates: Coordinates!
-  type: AddressType!
-}
-
-enum AddressType {
-  CUSTOM
-  HOME
-}
-
-type AuthResponse {
-  accessToken: String!
-  refreshToken: String!
-  user: User!
-}
-
-type Coordinates {
-  lat: Float!
-  lng: Float!
-}
-
 input CreateRestaurantInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -37,7 +16,7 @@ input CreateUserInput {
 
 input CreateZoneInput {
   description: String
-  polygon: JSON!
+  location: GeoJsonPolygonInput!
   title: String!
 }
 
@@ -46,21 +25,20 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input GeoJsonPolygonInput {
+  coordinates: [[[Float!]!]!]!
+  type: String!
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
 
-input LoginInput {
-  email: String!
-  password: String!
-}
-
 type Mutation {
   createRestaurant(createRestaurantInput: CreateRestaurantInput!): Restaurant!
   createUser(createUserInput: CreateUserInput!): User!
   createZone(createZoneInput: CreateZoneInput!): Zone!
-  login(loginInput: LoginInput!): AuthResponse!
   removeRestaurant(id: Int!): Restaurant!
   removeUser(id: String!): User!
   removeZone(id: String!): Zone!
@@ -99,23 +77,21 @@ input UpdateUserInput {
 
 input UpdateZoneInput {
   description: String
-  id: Int!
-  polygon: JSON
+  id: String!
+  location: GeoJsonPolygonInput
   title: String
 }
 
 type User {
-  address: [Address!]
+  address: JSON
   bussinessRegNo: String
   createdAt: DateTime!
   email: String!
   emailVerified: Boolean!
   id: ID!
   name: String!
-  password: String!
   phone: String
   phoneVerified: Boolean!
-  refreshToken: String
   role: UserRole!
   updatedAt: DateTime!
 }
@@ -130,7 +106,7 @@ type Zone {
   createdAt: DateTime!
   description: String
   id: ID!
-  polygon: String!
+  location: JSON!
   title: String!
   updatedAt: DateTime!
 }
