@@ -23,6 +23,11 @@ type Coordinates {
   lng: Float!
 }
 
+input CreateRestaurantInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
@@ -32,9 +37,8 @@ input CreateUserInput {
 
 input CreateZoneInput {
   description: String
-  name: String!
   polygon: JSON!
-  userId: String!
+  title: String!
 }
 
 """
@@ -53,20 +57,36 @@ input LoginInput {
 }
 
 type Mutation {
+  createRestaurant(createRestaurantInput: CreateRestaurantInput!): Restaurant!
   createUser(createUserInput: CreateUserInput!): User!
   createZone(createZoneInput: CreateZoneInput!): Zone!
   login(loginInput: LoginInput!): AuthResponse!
+  removeRestaurant(id: Int!): Restaurant!
   removeUser(id: String!): User!
   removeZone(id: String!): Zone!
+  updateRestaurant(updateRestaurantInput: UpdateRestaurantInput!): Restaurant!
   updateUser(updateUserInput: UpdateUserInput!): User!
   updateZone(updateZoneInput: UpdateZoneInput!): Zone!
 }
 
 type Query {
+  restaurant(id: Int!): Restaurant!
+  restaurants: [Restaurant!]!
   user(id: String!): User!
   users: [User!]!
   zone(id: String!): Zone!
   zones: [Zone!]!
+}
+
+type Restaurant {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateRestaurantInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdateUserInput {
@@ -80,9 +100,8 @@ input UpdateUserInput {
 input UpdateZoneInput {
   description: String
   id: Int!
-  name: String
   polygon: JSON
-  userId: String
+  title: String
 }
 
 type User {
@@ -111,9 +130,7 @@ type Zone {
   createdAt: DateTime!
   description: String
   id: ID!
-  name: String!
   polygon: String!
+  title: String!
   updatedAt: DateTime!
-  user: User!
-  userId: String!
 }
