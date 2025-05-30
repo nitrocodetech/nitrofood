@@ -15,7 +15,7 @@ import { Zone } from 'src/zone/entities/zone.entity';
         type: 'postgres',
         url: config.get<string>('DATABASE_URL'),
         entities: [User, Zone],
-        synchronize: true, // ✅ this pushes entity changes to DB automatically
+        synchronize: true,
       }),
     }),
   ],
