@@ -25,9 +25,7 @@ export function DynamicBreadcrumb({ items }: DynamicBreadcrumbProps) {
           <div key={index} className="flex items-center">
             <BreadcrumbItem>
               {item.href ? (
-                <BreadcrumbLink>
-                  <Link href={item.href}>{item.label}</Link>
-                </BreadcrumbLink>
+                <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
               ) : (
                 <BreadcrumbPage>{item.label}</BreadcrumbPage>
               )}

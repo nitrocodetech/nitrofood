@@ -1,16 +1,35 @@
-import { customFieldInterface } from "@/libs/interfaces";
-import React, { FC, useState } from "react";
-import Image from "next/image";
-import { EyeOff } from "lucide-react";
-import { Eye } from "lucide-react";
+import React, { FC, ChangeEvent, KeyboardEvent } from "react";
+import { EyeOff, Eye } from "lucide-react";
 
-const CustomField: FC<customFieldInterface> = ({
+interface CustomFieldProps {
+  label?: string;
+  placeholder?: string;
+  width?: string; // Tailwind CSS width classes like "w-full"
+  value: string | number;
+  name: string;
+  type?: string; // e.g. "text", "password", "email", "textarea", etc.
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  className?: string;
+  "data-field"?: string;
+  error?: boolean;
+  errorMessage?: string;
+  required?: boolean;
+  disabled?: boolean;
+  onKeyDown?: (
+    e: KeyboardEvent<HTMLInputElement> | KeyboardEvent<HTMLTextAreaElement>
+  ) => void;
+  rows?: number;
+  labelColor?: string;
+}
+
+const CustomField: FC<CustomFieldProps> = ({
   label,
+  labelColor,
   placeholder,
   width = "w-full",
   value,
   name,
-  type,
+  type = "text",
   onChange,
   className = "",
   "data-field": dataField,
@@ -19,40 +38,70 @@ const CustomField: FC<customFieldInterface> = ({
   required = false,
   disabled = false,
   onKeyDown,
+  rows = 4, // default rows for textarea
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const isPasswordField = type === "password";
+  const isTextArea = type === "textarea";
   const inputType = isPasswordField && showPassword ? "text" : type;
 
   return (
     <div className={`flex flex-col gap-[6px] ${width}`}>
       {label && (
-        <label className="text-sm font-regular text-(--highlight)">
+        <label
+          className={`text-sm font-regular ${
+            labelColor ? labelColor : "text-(--highlight)"
+          }`}
+        >
           {label}
         </label>
       )}
       <div className="relative">
-        <input
-          type={inputType}
-          placeholder={placeholder}
-          onChange={onChange}
-          value={value}
-          name={name}
-          data-field={dataField}
-          className={`w-full border rounded-lg px-3.5 py-2.5 text-base font-regular text-placeholder focus:border-primary outline-none ${
-            disabled
-              ? "bg-gray-800"
-              : error
-              ? "border-red-900"
-              : value
-              ? "border-black"
-              : "border-(--borderstroke)"
-          } ${className} ${disabled ? "cursor-not-allowed" : ""}`}
-          required={required}
-          onKeyDown={onKeyDown}
-          disabled={disabled}
-        />
+        {isTextArea ? (
+          <textarea
+            placeholder={placeholder}
+            onChange={onChange}
+            value={value}
+            name={name}
+            data-field={dataField}
+            rows={rows}
+            className={`w-full border rounded-lg px-3.5 py-2.5 text-base font-regular text-placeholder focus:border-primary outline-none ${
+              disabled
+                ? "bg-gray-800"
+                : error
+                ? "border-red-900"
+                : value
+                ? "border-black"
+                : "border-(--borderstroke)"
+            } ${className} ${disabled ? "cursor-not-allowed" : ""}`}
+            required={required}
+            onKeyDown={onKeyDown}
+            disabled={disabled}
+          />
+        ) : (
+          <input
+            type={inputType}
+            placeholder={placeholder}
+            onChange={onChange}
+            value={value}
+            name={name}
+            data-field={dataField}
+            className={`w-full border rounded-lg px-3.5 py-2.5 text-base font-regular text-placeholder focus:border-primary outline-none ${
+              disabled
+                ? "bg-gray-800"
+                : error
+                ? "border-red-900"
+                : value
+                ? "border-black"
+                : "border-(--borderstroke)"
+            } ${className} ${disabled ? "cursor-not-allowed" : ""}`}
+            required={required}
+            onKeyDown={onKeyDown}
+            disabled={disabled}
+          />
+        )}
+
         {isPasswordField && (
           <button
             type="button"

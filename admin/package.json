@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
+    "@react-google-maps/api": "^2.20.6",
     "@tailwindcss/postcss": "^4.1.7",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
