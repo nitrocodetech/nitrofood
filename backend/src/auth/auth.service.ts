@@ -1,23 +1,23 @@
-// auth.service.ts
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginInput } from './dto/login-input.dto';
-import { PrismaService } from 'src/database/database.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private prisma: PrismaService,
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
   ) {}
 
   async login(loginInput: LoginInput) {
     const { email, password } = loginInput;
 
-    const user = await this.prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await this.userRepo.findOne({ where: { email } });
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -38,12 +38,10 @@ export class AuthService {
       { expiresIn: '7d' },
     );
 
-    // Optional: Store hashed refresh token in DB for logout/token rotation
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { refreshToken: hashedRefreshToken },
-    });
+    user.refreshToken = hashedRefreshToken;
+
+    await this.userRepo.save(user);
 
     return {
       accessToken,

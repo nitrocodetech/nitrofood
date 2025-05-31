@@ -12,10 +12,8 @@ mutation Login($loginInput: LoginInput!) {
       emailVerified
       id
       name
-      password
       phone
       phoneVerified
-      refreshToken
       role
       updatedAt
     }

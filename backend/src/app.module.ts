@@ -4,11 +4,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
-// import { AuthModule } from './auth/auth.module';
 import { ZoneModule } from './zone/zone.module';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { DatabaseModule } from './database/database.module';
 import GraphQLJSON from 'graphql-type-json';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import GraphQLJSON from 'graphql-type-json';
       resolvers: { JSON: GraphQLJSON }, // register JSON scalar
     }),
     DatabaseModule,
-    // AuthModule,
+    AuthModule,
     UsersModule,
     ZoneModule,
     RestaurantsModule,
