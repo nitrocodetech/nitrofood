@@ -8,11 +8,13 @@ type Props = {
 
 const MainPage = ({ children }: Props) => {
   return (
-    <div className="flex">
+    <div className="flex h-screen w-full overflow-hidden">
       <Sidebar />
-      <div className="flex-1">
+      <div className="flex flex-col flex-1 overflow-hidden">
         <Navbar />
-        <main>{children}</main>
+        <main className="flex-1 overflow-y-auto bg-gray-50 p-6">
+          {children}
+        </main>
       </div>
     </div>
   );

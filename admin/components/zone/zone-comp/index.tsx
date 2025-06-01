@@ -99,7 +99,7 @@ const ZoneComp = () => {
   };
 
   return (
-    <div className="py-7 px-6">
+    <div className="py-4 px-3">
       <div className="flex items-center justify-between mb-7">
         <Heading title="Zone" breadcrumbItems={breadcrumbItem} />
         <CustomButton

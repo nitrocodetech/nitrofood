@@ -4,6 +4,7 @@ import { inter } from "@/components/ui/font";
 import "./globals.css";
 import ApolloWrapper from "@/libs/ApolloWrapper";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-display `}>
         <ApolloWrapper>
           <Toaster position="top-right" reverseOrder={false} />
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </ApolloWrapper>
       </body>
     </html>
