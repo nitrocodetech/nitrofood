@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Plus, X } from "lucide-react";
-import CustomField from "../../common/fields";
-import CustomButton from "../../common/buttons";
-import Map from "../maps";
-import toast from "react-hot-toast";
-import { useMutation } from "@apollo/client";
-import { CREATE_ZONE } from "@/libs/graphql/mutations/zone";
+import React, { useEffect, useState } from 'react';
+import { Plus, X } from 'lucide-react';
+import CustomField from '../../common/fields';
+import CustomButton from '../../common/buttons';
+import Map from './polygon-map';
+import toast from 'react-hot-toast';
+import { useMutation } from '@apollo/client';
+import { CREATE_ZONE } from '@/libs/graphql/mutations/zone';
 
 const containerStyle = {
-  width: "100%",
-  height: "500px",
+  width: '100%',
+  height: '500px',
 };
 
 interface ZoneModalProps {
@@ -23,9 +23,7 @@ interface ZoneModalProps {
 }
 
 const ZoneModal: React.FC<ZoneModalProps> = ({ onClose, data, onChange }) => {
-  const [coordinates, setCoordinates] = useState<google.maps.LatLngLiteral[]>(
-    []
-  );
+  const [coordinates, setCoordinates] = useState<google.maps.LatLngLiteral[]>([]);
   const [createZone, { loading }] = useMutation(CREATE_ZONE);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -46,14 +44,11 @@ const ZoneModal: React.FC<ZoneModalProps> = ({ onClose, data, onChange }) => {
 
   const handleSubmit = async () => {
     if (!data.title || !data.description || coordinates.length === 0) {
-      toast.error("Please fill in all fields and draw a zone.");
+      toast.error('Please fill in all fields and draw a zone.');
       return;
     }
 
-    const polygonCoordinates = coordinates.map((coord) => [
-      coord.lng,
-      coord.lat,
-    ]);
+    const polygonCoordinates = coordinates.map(coord => [coord.lng, coord.lat]);
 
     if (
       polygonCoordinates.length > 0 &&
@@ -67,12 +62,12 @@ const ZoneModal: React.FC<ZoneModalProps> = ({ onClose, data, onChange }) => {
       title: data.title,
       description: data.description,
       location: {
-        type: "Polygon",
+        type: 'Polygon',
         coordinates: [polygonCoordinates],
       },
     };
 
-    console.log("Payload to send:", payload);
+    console.log('Payload to send:', payload);
 
     try {
       const { data: result } = await createZone({
@@ -81,12 +76,12 @@ const ZoneModal: React.FC<ZoneModalProps> = ({ onClose, data, onChange }) => {
         },
       });
 
-      toast.success("Zone created successfully!");
-      console.log("Created zone:", result.createZone);
+      toast.success('Zone created successfully!');
+      console.log('Created zone:', result.createZone);
       closeWithTransition();
     } catch (error) {
-      console.error("Error creating zone:", error);
-      toast.error("Failed to create zone.");
+      console.error('Error creating zone:', error);
+      toast.error('Failed to create zone.');
     }
   };
 
@@ -95,7 +90,7 @@ const ZoneModal: React.FC<ZoneModalProps> = ({ onClose, data, onChange }) => {
       {/* Overlay */}
       <div
         className={`fixed inset-0 bg-black/50 transition-opacity duration-300 ${
-          isVisible ? "opacity-100" : "opacity-0"
+          isVisible ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={closeWithTransition}
       />
@@ -103,7 +98,7 @@ const ZoneModal: React.FC<ZoneModalProps> = ({ onClose, data, onChange }) => {
       {/* Modal Panel */}
       <div
         className={`relative h-screen w-[500px] bg-white shadow-xl overflow-hidden transform transition-transform duration-300 ${
-          isVisible ? "translate-x-0" : "translate-x-full"
+          isVisible ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex items-center justify-end px-9 pt-9">
@@ -114,7 +109,7 @@ const ZoneModal: React.FC<ZoneModalProps> = ({ onClose, data, onChange }) => {
 
         <div
           className="flex flex-col gap-4 overflow-y-auto hide-scrollbar p-9"
-          style={{ maxHeight: "calc(100vh - 50px)" }}
+          style={{ maxHeight: 'calc(100vh - 50px)' }}
         >
           <h2 className="text-2xl font-semibold font-display">Add Zone</h2>
 
@@ -140,11 +135,7 @@ const ZoneModal: React.FC<ZoneModalProps> = ({ onClose, data, onChange }) => {
             labelColor="text-black"
           />
 
-          <Map
-            containerStyle={containerStyle}
-            zoom={19}
-            onPolygonComplete={handlePolygonData}
-          />
+          <Map containerStyle={containerStyle} zoom={19} onPolygonComplete={handlePolygonData} />
 
           <div className="mt-4 flex items-center justify-end">
             <CustomButton

@@ -1,8 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import LoginPage from "@/components/home";
-import { useAuth } from "@/context/AuthContext";
+'use client';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import LoginPage from '@/components/auth/login';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     if (accessToken) {
-      router.push("/dashboard");
+      router.push('/dashboard');
     } else {
       setIsLoggedIn(false);
     }

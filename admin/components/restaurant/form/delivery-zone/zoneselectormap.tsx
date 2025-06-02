@@ -1,15 +1,10 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-  DrawingManager,
-} from "@react-google-maps/api";
+import React, { useEffect, useRef, useState } from 'react';
+import { GoogleMap, LoadScript, Marker, DrawingManager } from '@react-google-maps/api';
 
-const LIBRARIES: "drawing"[] = ["drawing"];
-const GOOGLE_MAP_API_KEY = "AIzaSyBk4tvTtPaSEAVSvaao2yISz4m8Q-BeE1M";
+const LIBRARIES: 'drawing'[] = ['drawing'];
+const GOOGLE_MAP_API_KEY = 'AIzaSyBk4tvTtPaSEAVSvaao2yISz4m8Q-BeE1M';
 
 interface MapProps {
   containerStyle: React.CSSProperties;
@@ -17,29 +12,22 @@ interface MapProps {
   onZoneComplete?: (shapeData: ShapeResult) => void;
 }
 
-type ShapeType = "circle" | "polygon" | null;
+type ShapeType = 'circle' | 'polygon' | null;
 
 type ShapeResult =
-  | { type: "circle"; center: google.maps.LatLngLiteral; radius: number }
-  | { type: "polygon"; coordinates: google.maps.LatLngLiteral[] };
+  | { type: 'circle'; center: google.maps.LatLngLiteral; radius: number }
+  | { type: 'polygon'; coordinates: google.maps.LatLngLiteral[] };
 
-const ZoneSelectorMap: React.FC<MapProps> = ({
-  containerStyle,
-  zoom = 17,
-  onZoneComplete,
-}) => {
+const ZoneSelectorMap: React.FC<MapProps> = ({ containerStyle, zoom = 17, onZoneComplete }) => {
   const [shapeType, setShapeType] = useState<ShapeType>(null);
-  const [userLocation, setUserLocation] =
-    useState<google.maps.LatLngLiteral | null>(null);
+  const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [googleMaps, setGoogleMaps] = useState<typeof google | null>(null);
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
-  const shapeRef = useRef<google.maps.Circle | google.maps.Polygon | null>(
-    null
-  );
+  const shapeRef = useRef<google.maps.Circle | google.maps.Polygon | null>(null);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      pos => {
         setUserLocation({
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
@@ -51,9 +39,7 @@ const ZoneSelectorMap: React.FC<MapProps> = ({
     );
   }, []);
 
-  const handleOverlayComplete = (
-    e: google.maps.drawing.OverlayCompleteEvent
-  ) => {
+  const handleOverlayComplete = (e: google.maps.drawing.OverlayCompleteEvent) => {
     // Remove existing shape
     if (shapeRef.current) {
       shapeRef.current.setMap(null);
@@ -67,7 +53,7 @@ const ZoneSelectorMap: React.FC<MapProps> = ({
       const radius = circle.getRadius();
 
       if (center) {
-        onZoneComplete?.({ type: "circle", center, radius });
+        onZoneComplete?.({ type: 'circle', center, radius });
       }
     } else if (e.type === google.maps.drawing.OverlayType.POLYGON) {
       const polygon = e.overlay as google.maps.Polygon;
@@ -76,9 +62,9 @@ const ZoneSelectorMap: React.FC<MapProps> = ({
       const path = polygon
         .getPath()
         .getArray()
-        .map((latLng) => latLng.toJSON());
+        .map(latLng => latLng.toJSON());
 
-      onZoneComplete?.({ type: "polygon", coordinates: path });
+      onZoneComplete?.({ type: 'polygon', coordinates: path });
     }
 
     setShapeType(null); // disable drawing mode
@@ -98,13 +84,13 @@ const ZoneSelectorMap: React.FC<MapProps> = ({
         libraries={LIBRARIES}
         onLoad={() => setGoogleMaps(window.google)}
       >
-        <div style={{ position: "relative" }}>
+        <div style={{ position: 'relative' }}>
           {googleMaps && (
             <GoogleMap
               mapContainerStyle={containerStyle}
               center={userLocation || { lat: 33.6844, lng: 73.0479 }}
               zoom={zoom}
-              onLoad={(map) => setMapRef(map)}
+              onLoad={map => setMapRef(map)}
               options={{ disableDefaultUI: true }}
             >
               {userLocation && (
@@ -113,7 +99,7 @@ const ZoneSelectorMap: React.FC<MapProps> = ({
                   icon={{
                     path: google.maps.SymbolPath.CIRCLE,
                     scale: 8,
-                    fillColor: "#FF0000",
+                    fillColor: '#FF0000',
                     fillOpacity: 1,
                     strokeWeight: 1,
                   }}
@@ -126,21 +112,21 @@ const ZoneSelectorMap: React.FC<MapProps> = ({
                   options={{
                     drawingControl: false,
                     drawingMode:
-                      shapeType === "circle"
+                      shapeType === 'circle'
                         ? google.maps.drawing.OverlayType.CIRCLE
                         : google.maps.drawing.OverlayType.POLYGON,
                     circleOptions: {
-                      fillColor: "#00bfff",
+                      fillColor: '#00bfff',
                       fillOpacity: 0.5,
-                      strokeColor: "#00bfff",
+                      strokeColor: '#00bfff',
                       strokeWeight: 2,
                       editable: true,
                       draggable: true,
                     },
                     polygonOptions: {
-                      fillColor: "#ff0000",
+                      fillColor: '#ff0000',
                       fillOpacity: 0.6,
-                      strokeColor: "#ff0000",
+                      strokeColor: '#ff0000',
                       strokeWeight: 2,
                       editable: true,
                       draggable: true,
@@ -155,15 +141,15 @@ const ZoneSelectorMap: React.FC<MapProps> = ({
             <button
               onClick={handleRemoveShape}
               style={{
-                position: "absolute",
+                position: 'absolute',
                 top: 10,
                 left: 10,
                 zIndex: 5,
-                padding: "8px 12px",
-                backgroundColor: "#fff",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                cursor: "pointer",
+                padding: '8px 12px',
+                backgroundColor: '#fff',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                cursor: 'pointer',
               }}
             >
               Remove Zone
@@ -174,21 +160,17 @@ const ZoneSelectorMap: React.FC<MapProps> = ({
 
       <div className="mt-4 flex gap-4">
         <button
-          onClick={() => setShapeType("circle")}
+          onClick={() => setShapeType('circle')}
           className={`cursor-pointer px-4 w-[110px] h-[100px] rounded ${
-            shapeType === "circle"
-              ? "bg-(--darkprimary) text-white"
-              : "bg-gray-200"
+            shapeType === 'circle' ? 'bg-(--darkprimary) text-white' : 'bg-gray-200'
           }`}
         >
           Circle
         </button>
         <button
-          onClick={() => setShapeType("polygon")}
+          onClick={() => setShapeType('polygon')}
           className={`cursor-pointer px-4 w-[110px] h-[100px] rounded ${
-            shapeType === "polygon"
-              ? "bg-(--darkprimary) text-white"
-              : "bg-gray-200"
+            shapeType === 'polygon' ? 'bg-(--darkprimary) text-white' : 'bg-gray-200'
           }`}
         >
           Polygon

@@ -1,7 +1,7 @@
-import { getCurrentTime } from "@/libs/constants";
-import { FormTimingProps } from "@/libs/interfaces";
-import { CirclePlus, Trash2 } from "lucide-react";
-import React, { FC, useState } from "react";
+import { getCurrentTime } from '@/libs/constants';
+import { FormTimingProps } from '@/libs/interfaces';
+import { CirclePlus, Trash2 } from 'lucide-react';
+import React, { FC, useState } from 'react';
 
 const defaultTime = { start: getCurrentTime(), end: getCurrentTime() };
 
@@ -14,7 +14,7 @@ const FormTiming: FC<FormTimingProps> = ({ timings, setTimings }) => {
   const handleTimeChange = (
     dayIndex: number,
     slotIndex: number,
-    field: "start" | "end",
+    field: 'start' | 'end',
     value: string
   ) => {
     const updated = [...timings];
@@ -35,36 +35,24 @@ const FormTiming: FC<FormTimingProps> = ({ timings, setTimings }) => {
 
   return (
     <div className="w-full max-w-5xl mx-auto overflow-x-scroll hide-scrollbar">
-      <h2 className="text-lg font-semibold font-display mb-6">
-        Restaurant Timings
-      </h2>
+      <h2 className="text-lg font-semibold font-display mb-6">Restaurant Timings</h2>
 
       {/* Table Header with Bottom Border */}
       <div className="w-[90%] mx-auto grid grid-cols-3 items-center px-4 py-3 font-semibold text-sm border-b border-gray-300">
         <div className="text-left">Days</div>
-        <div className="text-left border-l border-gray-200 pl-4">
-          Start Time
-        </div>
+        <div className="text-left border-l border-gray-200 pl-4">Start Time</div>
         <div className="text-left border-l border-gray-200 pl-4">End Time</div>
       </div>
 
       {/* Table Body */}
       {timings.map((day, dayIndex) => (
-        <div
-          key={day.day}
-          className="w-[90%] mx-auto px-4 py-3 border-b border-gray-200"
-        >
+        <div key={day.day} className="w-[90%] mx-auto px-4 py-3 border-b border-gray-200">
           {day.slots.map((slot, slotIndex) => (
-            <div
-              key={slotIndex}
-              className="grid grid-cols-3 gap-4 items-center py-2 text-sm"
-            >
+            <div key={slotIndex} className="grid grid-cols-3 gap-4 items-center py-2 text-sm">
               {/* Day + Toggle */}
               {slotIndex === 0 ? (
                 <div className="flex items-center gap-4">
-                  <span className="w-12 font-medium text-gray-700">
-                    {day.day}
-                  </span>
+                  <span className="w-12 font-medium text-gray-700">{day.day}</span>
                   <label className="inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -86,14 +74,7 @@ const FormTiming: FC<FormTimingProps> = ({ timings, setTimings }) => {
                 <input
                   type="time"
                   value={slot.start}
-                  onChange={(e) =>
-                    handleTimeChange(
-                      dayIndex,
-                      slotIndex,
-                      "start",
-                      e.target.value
-                    )
-                  }
+                  onChange={e => handleTimeChange(dayIndex, slotIndex, 'start', e.target.value)}
                   className="border border-gray-300 rounded px-3 py-2 w-full text-sm"
                   disabled={!day.enabled}
                 />
@@ -104,9 +85,7 @@ const FormTiming: FC<FormTimingProps> = ({ timings, setTimings }) => {
                 <input
                   type="time"
                   value={slot.end}
-                  onChange={(e) =>
-                    handleTimeChange(dayIndex, slotIndex, "end", e.target.value)
-                  }
+                  onChange={e => handleTimeChange(dayIndex, slotIndex, 'end', e.target.value)}
                   className="border border-gray-300 rounded px-3 py-2 w-full text-sm"
                   disabled={!day.enabled}
                 />

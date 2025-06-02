@@ -1,11 +1,11 @@
-"use client";
-import CustomButton from "@/components/common/buttons";
-import Heading from "@/components/common/heading";
-import Modal from "@/components/common/modal";
-import VendorForm from "@/components/vendorform";
-import { Plus } from "lucide-react";
-import React, { useState } from "react";
-const breadcrumbItem = [{ label: "Dashboard", href: "/" }, { label: "Vendor" }];
+'use client';
+import CustomButton from '@/components/common/buttons';
+import Heading from '@/components/common/heading';
+import Modal from '@/components/common/modal';
+import VendorForm from '@/components/restaurant/form';
+import { Plus } from 'lucide-react';
+import React, { useState } from 'react';
+const breadcrumbItem = [{ label: 'Dashboard', href: '/' }, { label: 'Vendor' }];
 
 const VendorsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -26,11 +26,7 @@ const VendorsPage = () => {
         />
       </div>
       {isModalOpen && (
-        <Modal
-          onClose={handleCloseModal}
-          title="Add Restaurant"
-          children={<VendorForm />}
-        />
+        <Modal onClose={handleCloseModal} title="Add Restaurant" children={<VendorForm />} />
       )}
     </div>
   );

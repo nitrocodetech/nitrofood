@@ -1,29 +1,29 @@
-"use client";
-import React, { useState } from "react";
-import Progressbar from "../common/progressbar";
-import CustomButton from "../common/buttons";
-import FormData from "./form-data";
-import VendorAddress from "./address";
-import FormTiming from "./form-timing";
-import { daysOfWeek, getCurrentTime } from "@/libs/constants";
-import { ZoneData } from "@/libs/interfaces";
+'use client';
+import React, { useState } from 'react';
+import Progressbar from '../../common/progressbar';
+import CustomButton from '../../common/buttons';
+import FormData from './details';
+import VendorAddress from './delivery-zone';
+import FormTiming from './timings';
+import { daysOfWeek, getCurrentTime } from '@/libs/constants';
+import { ZoneData } from '@/libs/interfaces';
 // import AddressForm from "./address-form";
 // import TimingForm from "./timing-form";
 
-const steps = ["Personal info", "Address", "Timing"];
+const steps = ['Personal info', 'Address', 'Timing'];
 
 const VendorForm = () => {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    address: "",
-    gst: "",
-    cuisines: "",
-    minDeliveryTime: "",
-    maxDeliveryTime: "",
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    address: '',
+    gst: '',
+    cuisines: '',
+    minDeliveryTime: '',
+    maxDeliveryTime: '',
     coverPhoto: null as File | null,
     profilePhoto: null as File | null,
   });
@@ -31,19 +31,19 @@ const VendorForm = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: "" }));
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setErrors(prev => ({ ...prev, [field]: '' }));
   };
   const handleFileChange = (field: string, file: File) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [field]: file,
     }));
-    setErrors((prev) => ({ ...prev, [field]: "" }));
+    setErrors(prev => ({ ...prev, [field]: '' }));
   };
 
   const [timings, setTimings] = useState(
-    daysOfWeek.map((day) => ({
+    daysOfWeek.map(day => ({
       day,
       enabled: true,
       slots: [{ start: getCurrentTime(), end: getCurrentTime() }],
@@ -56,33 +56,31 @@ const VendorForm = () => {
     if (step === 0) {
       // Validate formData fields
       if (!formData.name.trim()) {
-        newErrors.name = "Name is required";
+        newErrors.name = 'Name is required';
         valid = false;
       }
       if (!formData.email.trim()) {
-        newErrors.email = "Email is required";
+        newErrors.email = 'Email is required';
         valid = false;
-      } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
-      ) {
-        newErrors.email = "Invalid email address";
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
+        newErrors.email = 'Invalid email address';
         valid = false;
       }
       if (!formData.phone.trim()) {
-        newErrors.phone = "Phone number is required";
+        newErrors.phone = 'Phone number is required';
         valid = false;
       }
       if (!formData.password.trim()) {
-        newErrors.password = "Password is required";
+        newErrors.password = 'Password is required';
         valid = false;
       } else if (formData.password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters";
+        newErrors.password = 'Password must be at least 6 characters';
         valid = false;
       }
       // Add more validations as needed
     } else if (step === 1) {
       if (!zoneData) {
-        newErrors.zoneData = "Delivery zone is required";
+        newErrors.zoneData = 'Delivery zone is required';
         valid = false;
       }
     } else if (step === 2) {
@@ -91,12 +89,10 @@ const VendorForm = () => {
         if (enabled) {
           slots.forEach(({ start, end }, index) => {
             if (!start || !end) {
-              newErrors[`timing_${day}_slot_${index}`] =
-                "Start and end time required";
+              newErrors[`timing_${day}_slot_${index}`] = 'Start and end time required';
               valid = false;
             } else if (start >= end) {
-              newErrors[`timing_${day}_slot_${index}`] =
-                "Start time must be before end time";
+              newErrors[`timing_${day}_slot_${index}`] = 'Start time must be before end time';
               valid = false;
             }
           });
@@ -109,18 +105,18 @@ const VendorForm = () => {
   };
   const handleNext = () => {
     if (validateStep()) {
-      setStep((prev) => Math.min(prev + 1, steps.length - 1));
+      setStep(prev => Math.min(prev + 1, steps.length - 1));
     }
   };
 
   const handleBack = () => {
-    setStep((prev) => Math.max(prev - 1, 0));
+    setStep(prev => Math.max(prev - 1, 0));
   };
 
   const handleSubmit = () => {
     if (validateStep()) {
       // All validations passed
-      console.log("Form submitted!", { formData, zoneData, timings });
+      console.log('Form submitted!', { formData, zoneData, timings });
     }
   };
   const renderStepComponent = () => {
@@ -136,11 +132,7 @@ const VendorForm = () => {
         );
       case 1:
         return (
-          <VendorAddress
-            zoneData={zoneData}
-            setZoneData={setZoneData}
-            error={errors.zoneData}
-          />
+          <VendorAddress zoneData={zoneData} setZoneData={setZoneData} error={errors.zoneData} />
         );
       case 2:
         return <FormTiming timings={timings} setTimings={setTimings} />;
