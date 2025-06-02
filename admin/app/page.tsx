@@ -2,14 +2,15 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginPage from "@/components/home";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+  const { accessToken } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
+    if (accessToken) {
       router.push("/dashboard");
     } else {
       setIsLoggedIn(false);

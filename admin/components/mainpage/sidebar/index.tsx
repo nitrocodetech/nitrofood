@@ -31,7 +31,7 @@ const sidebarItems: SidebarItem[] = [
   { name: "Dashboard", icon: <Frame size={20} />, link: "/dashboard" },
   { name: "Zone", icon: <Map size={20} />, link: "/zone" },
   { name: "Users", icon: <Users size={20} />, link: "/users" },
-  { name: "Vendors", icon: <Store size={20} />, link: "/vendors" },
+  { name: "Vendor", icon: <Store size={20} />, link: "/vendor" },
   { name: "Riders", icon: <Bike size={20} />, link: "/riders" },
   { name: "Products", icon: <ShoppingBasket size={20} />, link: "/products" },
   { name: "Orders", icon: <BadgeDollarSign size={20} />, link: "/orders" },
@@ -49,7 +49,7 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname(); // 👈 current route path
 
   return (
-    <div className="w-[20%] flex flex-col gap-10 px-[23px] h-screen pt-8 border border-gray-200">
+    <div className="w-64 flex-shrink-0 flex flex-col gap-10 px-[23px] h-screen pt-8 border border-gray-200">
       <div className="flex justify-center">
         <Image src={Logo} alt="Logo" width={180} height={24} />
       </div>

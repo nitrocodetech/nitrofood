@@ -5,9 +5,18 @@ import LoginIllustration from "./login/LoginIllustration";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "@/libs/graphql/mutations/auth";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
 
 const LoginPage = () => {
   const [login, { data, loading, error }] = useMutation(LOGIN);
+  const {
+    setAccessToken,
+    setRefreshToken,
+    setUser,
+    user,
+    refreshToken,
+    accessToken,
+  } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -36,9 +45,9 @@ const LoginPage = () => {
 
       if (accessToken && user) {
         toast.success("Login successful!");
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("user", JSON.stringify(user));
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+        setUser(user);
       } else {
         toast.error("Login failed: Missing token or user data.");
       }
