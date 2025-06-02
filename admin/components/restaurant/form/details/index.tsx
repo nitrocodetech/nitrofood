@@ -1,110 +1,90 @@
 import React from 'react';
 import FileUploadArea from '../../../common/fields/FileUploadArea';
 import { Input } from '../../../ui/input';
+import { UseFormRegister, FieldErrors, UseFormSetValue } from 'react-hook-form';
+import { VendorFormValues } from '@/lib/schemas/vendorschema';
 
 type FormDataProps = {
-  formData: {
-    name: string;
-    email: string;
-    phone: string;
-    password: string;
-    address: string;
-    gst: string;
-    cuisines: string;
-    minDeliveryTime: string;
-    maxDeliveryTime: string;
-    coverPhoto: File | null;
-    profilePhoto: File | null;
-  };
-  handleChange: (field: string, value: string) => void;
-  handleFileChange: (field: string, file: File) => void;
-  errors: { [key: string]: string };
+  register: UseFormRegister<VendorFormValues>;
+  errors: FieldErrors<VendorFormValues>;
+  setValue: UseFormSetValue<VendorFormValues>;
 };
 
-const FormData: React.FC<FormDataProps> = ({
-  formData,
-  handleChange,
-  handleFileChange,
-  errors,
-}) => {
+const FormData: React.FC<FormDataProps> = ({ register, errors, setValue }) => {
+  // File change handler to integrate with RHF
+  const onFileChange = (field: keyof VendorFormValues, files: File[]) => {
+    if (files && files.length > 0) {
+      setValue(field, files[0], { shouldValidate: true });
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-4">
-        <Input
-          label="Name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={e => handleChange('name', e.target.value)}
-          error={errors.name}
-        />
+        <Input label="Name" placeholder="Name" {...register('name')} error={errors.name?.message} />
         <Input
           label="Email"
           placeholder="Enter Your Email"
-          value={formData.email}
-          onChange={e => handleChange('email', e.target.value)}
-          error={errors.email}
+          {...register('email')}
+          error={errors.email?.message}
         />
         <Input
           label="Phone Number"
           placeholder="Enter Your Phone number"
-          value={formData.phone}
-          onChange={e => handleChange('phone', e.target.value)}
-          error={errors.phone}
+          {...register('phone')}
+          error={errors.phone?.message}
         />
         <Input
           label="Password"
           placeholder="Enter Your Password"
-          value={formData.password}
-          onChange={e => handleChange('password', e.target.value)}
-          error={errors.password}
+          type="password"
+          {...register('password')}
+          error={errors.password?.message}
         />
         <Input
           label="Address"
           placeholder="Enter Your Store Address"
-          value={formData.address}
-          onChange={e => handleChange('address', e.target.value)}
-          error={errors.address}
+          {...register('address')}
+          error={errors.address?.message}
         />
         <Input
           label="GST/VAT %"
           placeholder="%0.00"
-          value={formData.gst}
-          onChange={e => handleChange('gst', e.target.value)}
-          error={errors.gst}
+          {...register('gst')}
+          error={errors.gst?.message}
         />
         <Input
           label="Cuisines"
           placeholder="Cuisines"
-          value={formData.cuisines}
-          error={errors.cuisines}
-          onChange={e => handleChange('cuisines', e.target.value)}
+          {...register('cuisines')}
+          error={errors.cuisines?.message}
         />
         <div className="flex gap-2">
           <Input
             label="Min Delivery Time"
             placeholder="Estimated Delivery Time in Minutes"
-            value={formData.minDeliveryTime}
-            onChange={e => handleChange('minDeliveryTime', e.target.value)}
+            {...register('minDeliveryTime')}
             className="w-[240px]"
-            error={errors.minDeliveryTime}
+            error={errors.minDeliveryTime?.message}
           />
           <Input
             label="Max Delivery Time"
             placeholder="Estimated Delivery Time in Minutes"
-            value={formData.maxDeliveryTime}
-            onChange={e => handleChange('maxDeliveryTime', e.target.value)}
+            {...register('maxDeliveryTime')}
             className="w-[240px]"
-            error={errors.maxDeliveryTime}
+            error={errors.maxDeliveryTime?.message}
           />
         </div>
         <div className="flex gap-4">
           <FileUploadArea
             title="Cover Photo"
-            onDrop={files => handleFileChange('coverPhoto', files[0])}
+            onDrop={files => onFileChange('coverPhoto', files)}
+            // error={errors.coverPhoto?.message}
           />
           <FileUploadArea
             title="Profile Photo"
-            onDrop={files => handleFileChange('profilePhoto', files[0])}
+            onDrop={files => onFileChange('profilePhoto', files)}
+            // error={errors.profilePhoto?.message}
           />
         </div>
       </div>
