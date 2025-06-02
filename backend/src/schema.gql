@@ -9,8 +9,23 @@ type AuthResponse {
 }
 
 input CreateRestaurantInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  address: String!
+  coverPhoto: String
+  cuisines: [String!]!
+  deliveryZone: DeliveryZoneInput
+  deliveryZoneRadius: Float
+  deliveryZoneType: DeliveryZoneType!
+  email: String!
+  location: LocationInput!
+  maxDeliveryTime: Int!
+  minDeliveryTime: Int!
+  name: String!
+  password: String!
+  phone: String
+  profilePhoto: String
+  tax: Float
+  timings: [TimingEntryInput!]
+  zoneId: ID!
 }
 
 input CreateUserInput {
@@ -31,6 +46,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input DeliveryZoneInput {
+  coordinates: [[[Float!]!]!]
+}
+
+enum DeliveryZoneType {
+  CIRCLE
+  POLYGON
+}
+
 input GeoJsonPolygonInput {
   coordinates: [[[Float!]!]!]!
   type: String!
@@ -40,6 +64,11 @@ input GeoJsonPolygonInput {
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
+
+input LocationInput {
+  """Longitude and Latitude"""
+  coordinates: [Float!]!
+}
 
 input LoginInput {
   email: String!
@@ -51,7 +80,7 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   createZone(createZoneInput: CreateZoneInput!): Zone!
   login(loginInput: LoginInput!): AuthResponse!
-  removeRestaurant(id: Int!): Restaurant!
+  removeRestaurant(id: String!): Restaurant!
   removeUser(id: String!): User!
   removeZone(id: String!): Zone!
   updateRestaurant(updateRestaurantInput: UpdateRestaurantInput!): Restaurant!
@@ -69,14 +98,55 @@ type Query {
 }
 
 type Restaurant {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  address: String!
+  coverPhoto: String
+  cuisines: [String!]!
+  deliveryZone: JSON!
+  deliveryZoneRadius: Float
+  deliveryZoneType: DeliveryZoneType!
+  email: String!
+  id: ID!
+  location: JSON!
+  maxDeliveryTime: Int!
+  minDeliveryTime: Int!
+  name: String!
+  password: String!
+  phone: String
+  profilePhoto: String
+  tax: Float
+  timings: [TimingEntry!]!
+  zone: Zone!
+}
+
+type TimingEntry {
+  day: String!
+  times: [[String!]!]!
+}
+
+input TimingEntryInput {
+  day: String!
+  times: [[String!]!]!
 }
 
 input UpdateRestaurantInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  address: String
+  coverPhoto: String
+  cuisines: [String!]
+  deliveryZone: DeliveryZoneInput
+  deliveryZoneRadius: Float
+  deliveryZoneType: DeliveryZoneType
+  email: String
+  id: String!
+  location: LocationInput
+  maxDeliveryTime: Int
+  minDeliveryTime: Int
+  name: String
+  password: String
+  phone: String
+  profilePhoto: String
+  tax: Float
+  timings: [TimingEntryInput!]
+  zoneId: ID
 }
 
 input UpdateUserInput {

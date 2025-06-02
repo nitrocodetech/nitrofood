@@ -3,8 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from 'src/users/entities/user.entity';
 import { Zone } from 'src/zone/entities/zone.entity';
+import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 
-@Global() // <-- This makes the module global
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -14,7 +15,7 @@ import { Zone } from 'src/zone/entities/zone.entity';
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
         url: config.get<string>('DATABASE_URL'),
-        entities: [User, Zone],
+        entities: [User, Zone, Restaurant],
         synchronize: true,
       }),
     }),

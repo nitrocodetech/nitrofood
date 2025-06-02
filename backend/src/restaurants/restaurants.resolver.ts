@@ -9,7 +9,9 @@ export class RestaurantsResolver {
   constructor(private readonly restaurantsService: RestaurantsService) {}
 
   @Mutation(() => Restaurant)
-  createRestaurant(@Args('createRestaurantInput') createRestaurantInput: CreateRestaurantInput) {
+  createRestaurant(
+    @Args('createRestaurantInput') createRestaurantInput: CreateRestaurantInput,
+  ) {
     return this.restaurantsService.create(createRestaurantInput);
   }
 
@@ -19,17 +21,22 @@ export class RestaurantsResolver {
   }
 
   @Query(() => Restaurant, { name: 'restaurant' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => Int }) id: string) {
     return this.restaurantsService.findOne(id);
   }
 
   @Mutation(() => Restaurant)
-  updateRestaurant(@Args('updateRestaurantInput') updateRestaurantInput: UpdateRestaurantInput) {
-    return this.restaurantsService.update(updateRestaurantInput.id, updateRestaurantInput);
+  updateRestaurant(
+    @Args('updateRestaurantInput') updateRestaurantInput: UpdateRestaurantInput,
+  ) {
+    return this.restaurantsService.update(
+      updateRestaurantInput.id,
+      updateRestaurantInput,
+    );
   }
 
   @Mutation(() => Restaurant)
-  removeRestaurant(@Args('id', { type: () => Int }) id: number) {
+  removeRestaurant(@Args('id', { type: () => String }) id: string) {
     return this.restaurantsService.remove(id);
   }
 }

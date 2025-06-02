@@ -33,6 +33,8 @@ export class Zone {
   })
   location: Polygon;
 
+  type: string;
+
   @Field()
   @CreateDateColumn()
   createdAt: Date;
