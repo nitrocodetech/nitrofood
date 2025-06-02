@@ -19,17 +19,12 @@ const VendorAddress: FC<VendorAddressProps> = ({
       <h2 className="text-xl font-semibold mb-2">
         Address and Delivery Radius
       </h2>
-
+      {/* dropdown here */}
       <ZoneSelectorMap
         containerStyle={{ width: "100%", height: "400px" }}
         onZoneComplete={handleZoneComplete}
       />
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-      {/* {zoneData && (
-        <pre className="mt-4 p-4 bg-gray-100 rounded text-sm">
-          {JSON.stringify(zoneData, null, 2)}
-        </pre>
-      )} */}
     </div>
   );
 };

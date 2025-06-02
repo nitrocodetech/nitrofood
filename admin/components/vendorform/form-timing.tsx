@@ -34,7 +34,7 @@ const FormTiming: FC<FormTimingProps> = ({ timings, setTimings }) => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto overflow-x-scroll hide-scrollbar">
       <h2 className="text-lg font-semibold font-display mb-6">
         Restaurant Timings
       </h2>
