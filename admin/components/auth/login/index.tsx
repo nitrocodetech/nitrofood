@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import FormPage from './form';
 import LoginIllustration from './illustration';
 import { useMutation } from '@apollo/client';
-import { LOGIN } from '@/libs/graphql/mutations/auth';
+import { LOGIN } from '@/lib/graphql/mutations/auth';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/context/AuthContext';
 

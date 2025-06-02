@@ -1,16 +1,16 @@
-"use client";
-import { FC } from "react";
-import { CustomButtonProps } from "@/libs/interfaces";
+'use client';
+import { FC } from 'react';
+import { CustomButtonProps } from '@/lib/interfaces';
 // import { CircularProgress } from '@mui/material'
 
 const CustomButton: FC<CustomButtonProps> = ({
-  title = "Custom Button",
-  color = "text-white",
-  loaderColor = "white",
+  title = 'Custom Button',
+  color = 'text-white',
+  loaderColor = 'white',
   loading = false,
-  backgroundColor = "",
-  fontSize = "text-[14px] md:text-[16px]",
-  otherClasses = "",
+  backgroundColor = '',
+  fontSize = 'text-[14px] md:text-[16px]',
+  otherClasses = '',
   handleOnClick,
   disabled = false,
   type,
@@ -24,7 +24,7 @@ const CustomButton: FC<CustomButtonProps> = ({
   return (
     <button
       className={`${color} ${
-        disabled ? "bg-gray-800 cursor-not-allowed" : backgroundColor
+        disabled ? 'bg-gray-800 cursor-not-allowed' : backgroundColor
       } ${fontSize} rounded-button px-10 font-normal cursor-pointer ${otherClasses}`}
       type={type}
       onClick={handleOnClick}

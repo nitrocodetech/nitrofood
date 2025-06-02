@@ -1,5 +1,5 @@
-import { getCurrentTime } from '@/libs/constants';
-import { FormTimingProps } from '@/libs/interfaces';
+import { getCurrentTime } from '@/lib/constants';
+import { FormTimingProps } from '@/lib/interfaces';
 import { CirclePlus, Trash2 } from 'lucide-react';
 import React, { FC, useState } from 'react';
 

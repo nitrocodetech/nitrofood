@@ -5,7 +5,7 @@ import CustomButton from '../../common/buttons';
 import Map from './polygon-map';
 import toast from 'react-hot-toast';
 import { useMutation } from '@apollo/client';
-import { CREATE_ZONE } from '@/libs/graphql/mutations/zone';
+import { CREATE_ZONE } from '@/lib/graphql/mutations/zone';
 
 const containerStyle = {
   width: '100%',

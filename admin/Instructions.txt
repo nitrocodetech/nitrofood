@@ -1,0 +1,14 @@
+1. Put types in lib
+2. Use a valid naming convention
+3. Remove push setIsLoggedIn and router.push logic in admin/app/(admin)/layout.tsx
+4. Add loding state in login button
+5. Add skeleton in datatable when the data is loading
+6. Add validation in forms with in a proper way
+7. Add all constants in lib/constants i.e routes in sidebar, api keys etc.
+8. Make table bg white
+9. Allow selection of row from checkbox as in original shadcn design
+10. Fix zone map not loading issue
+11. Add proper validation in zone
+12. Cloudinary image and video upload component. Also store api keys in constants
+13. Complete crud operation in zone
+14. Add logout in dropdown menu at profile name clicked at right top

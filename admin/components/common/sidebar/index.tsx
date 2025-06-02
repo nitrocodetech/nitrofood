@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { JSX } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import React, { JSX } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 // Assets & Icons
-import Logo from "@/assets/nitro-logo.png";
+import Logo from '@/assets/nitro-logo.png';
 import {
   BadgeDollarSign,
   Banknote,
@@ -19,7 +19,7 @@ import {
   Users,
   Frame,
   Map,
-} from "lucide-react";
+} from 'lucide-react';
 
 type SidebarItem = {
   name: string;
@@ -28,20 +28,20 @@ type SidebarItem = {
 };
 
 const sidebarItems: SidebarItem[] = [
-  { name: "Dashboard", icon: <Frame size={20} />, link: "/dashboard" },
-  { name: "Zone", icon: <Map size={20} />, link: "/zone" },
-  { name: "Users", icon: <Users size={20} />, link: "/users" },
-  { name: "Vendor", icon: <Store size={20} />, link: "/vendor" },
-  { name: "Riders", icon: <Bike size={20} />, link: "/riders" },
-  { name: "Products", icon: <ShoppingBasket size={20} />, link: "/products" },
-  { name: "Orders", icon: <BadgeDollarSign size={20} />, link: "/orders" },
-  { name: "Banners", icon: <Images size={20} />, link: "/banners" },
-  { name: "Coupons", icon: <TicketPercent size={20} />, link: "/coupons" },
-  { name: "Tip", icon: <Banknote size={20} />, link: "/tips" },
+  { name: 'Dashboard', icon: <Frame size={20} />, link: '/dashboard' },
+  { name: 'Zone', icon: <Map size={20} />, link: '/zone' },
+  { name: 'Users', icon: <Users size={20} />, link: '/users' },
+  { name: 'Restaurants', icon: <Store size={20} />, link: '/restaurant' },
+  { name: 'Riders', icon: <Bike size={20} />, link: '/riders' },
+  { name: 'Products', icon: <ShoppingBasket size={20} />, link: '/products' },
+  { name: 'Orders', icon: <BadgeDollarSign size={20} />, link: '/orders' },
+  { name: 'Banners', icon: <Images size={20} />, link: '/banners' },
+  { name: 'Coupons', icon: <TicketPercent size={20} />, link: '/coupons' },
+  { name: 'Tip', icon: <Banknote size={20} />, link: '/tips' },
   {
-    name: "Management",
+    name: 'Management',
     icon: <SlidersHorizontal size={20} />,
-    link: "/management",
+    link: '/management',
   },
 ];
 
@@ -65,16 +65,14 @@ const Sidebar: React.FC = () => {
               className={`group flex items-center gap-4 px-5 py-2 hover:bg-(--darkprimary) rounded-md text-sm font-medium font-display transition
                 ${
                   isActive
-                    ? "bg-(--darkprimary) text-white"
-                    : "text-(--sidebartext) hover:bg-[--darkprimary] hover:text-white"
+                    ? 'bg-(--darkprimary) text-white'
+                    : 'text-(--sidebartext) hover:bg-[--darkprimary] hover:text-white'
                 }
               `}
             >
               <span
                 className={`${
-                  isActive
-                    ? "text-white"
-                    : "text-gray-500 group-hover:text-white"
+                  isActive ? 'text-white' : 'text-gray-500 group-hover:text-white'
                 } transition`}
               >
                 {item.icon}

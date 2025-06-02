@@ -1,4 +1,4 @@
-import { ChangeEvent, CSSProperties, ReactNode } from "react";
+import { ChangeEvent, CSSProperties, ReactNode } from 'react';
 
 export interface customFieldInterface {
   label: string;
@@ -9,7 +9,7 @@ export interface customFieldInterface {
   type: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-  "data-field"?: string;
+  'data-field'?: string;
   error?: boolean;
   errorMessage?: string;
   required?: boolean;
@@ -28,7 +28,7 @@ export interface CustomButtonProps {
   otherClasses?: string;
   handleOnClick?: any;
   disabled?: any;
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
   prefixIcon?: ReactNode;
   postfixIcon?: ReactNode;
   textClasses?: string;
@@ -58,12 +58,12 @@ export interface LatLng {
 }
 
 export interface PolygonZone {
-  type: "polygon";
+  type: 'polygon';
   coordinates: LatLng[];
 }
 
 export interface CircleZone {
-  type: "circle";
+  type: 'circle';
   center: LatLng;
   radius: number;
 }

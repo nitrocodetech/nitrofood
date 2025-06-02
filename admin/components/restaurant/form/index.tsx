@@ -5,8 +5,8 @@ import CustomButton from '../../common/buttons';
 import FormData from './details';
 import VendorAddress from './delivery-zone';
 import FormTiming from './timings';
-import { daysOfWeek, getCurrentTime } from '@/libs/constants';
-import { ZoneData } from '@/libs/interfaces';
+import { daysOfWeek, getCurrentTime } from '@/lib/constants';
+import { ZoneData } from '@/lib/interfaces';
 // import AddressForm from "./address-form";
 // import TimingForm from "./timing-form";
 

@@ -7,7 +7,7 @@ import { DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import ZoneModal from '@/components/zone/form';
 import { useQuery } from '@apollo/client';
-import { GET_ZONES } from '@/libs/graphql/queries/getZones';
+import { GET_ZONES } from '@/lib/graphql/queries/getZones';
 
 const breadcrumbItem = [{ label: 'Dashboard', href: '/' }, { label: 'Zone' }];
 

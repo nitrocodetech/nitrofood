@@ -1,8 +1,8 @@
 'use client';
 
 import React, { FC, useState } from 'react';
-import ZoneSelectorMap from './zoneselectormap';
-import { VendorAddressProps, ZoneData } from '@/libs/interfaces';
+import ZoneSelectorMap from './polygin-circle-map';
+import { VendorAddressProps, ZoneData } from '@/lib/interfaces';
 
 const VendorAddress: FC<VendorAddressProps> = ({ zoneData, setZoneData, error }) => {
   const handleZoneComplete = (data: ZoneData) => {
