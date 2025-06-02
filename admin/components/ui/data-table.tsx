@@ -84,10 +84,10 @@ export function DataTable<TData>({ columns, data }: DataTableProps<TData>) {
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : header.column.columnDef.header instanceof Function
-                      ? // Pass full header context here to fix the TS error
-                        header.column.columnDef.header(header)
+                      : typeof header.column.columnDef.header === "function"
+                      ? header.column.columnDef.header(header.getContext())
                       : header.column.columnDef.header}
+
                     {/* Sort button example (optional) */}
                     {header.column.getCanSort() ? (
                       <Button

@@ -15,9 +15,10 @@ export default function Home() {
     } else {
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [accessToken]);
 
   if (isLoggedIn === null) return null;
+  console.log(accessToken);
 
   return <LoginPage />;
 }

@@ -30,10 +30,6 @@ type Payment = {
 
 export const columns: ColumnDef<Zone>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
-  },
-  {
     accessorKey: "title",
     header: "Title",
   },
@@ -46,18 +42,10 @@ export const columns: ColumnDef<Zone>[] = [
     header: "Created At",
     cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
   },
-  // {
-  //   accessorKey: "updatedAt",
-  //   header: "Updated At",
-  //   cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
-  // },
   {
-    accessorKey: "location",
-    header: "Coordinates",
-    cell: ({ row }) => {
-      const coords = JSON.stringify(row.original.location.coordinates[0]);
-      return <span title={coords}>{coords.slice(0, 50)}...</span>;
-    },
+    accessorKey: "updatedAt",
+    header: "Updated At",
+    cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
   },
 ];
 

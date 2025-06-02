@@ -36,3 +36,42 @@ export interface CustomButtonProps {
   onMouseLeave?: () => void;
   style?: CSSProperties;
 }
+
+export interface TimeSlot {
+  start: string;
+  end: string;
+}
+
+export interface DayTiming {
+  day: string;
+  enabled: boolean;
+  slots: TimeSlot[];
+}
+export interface FormTimingProps {
+  timings: DayTiming[];
+  setTimings: React.Dispatch<React.SetStateAction<DayTiming[]>>;
+}
+
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+export interface PolygonZone {
+  type: "polygon";
+  coordinates: LatLng[];
+}
+
+export interface CircleZone {
+  type: "circle";
+  center: LatLng;
+  radius: number;
+}
+
+export type ZoneData = PolygonZone | CircleZone | null;
+
+export interface VendorAddressProps {
+  zoneData: ZoneData;
+  setZoneData: (data: ZoneData) => void;
+  error?: string;
+}
