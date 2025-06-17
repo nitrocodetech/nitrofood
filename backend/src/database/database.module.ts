@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from 'src/users/entities/user.entity';
 import { Zone } from 'src/zone/entities/zone.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
+import { Cuisine } from 'src/cuisine/entities/cuisine.entity';
 
 @Global()
 @Module({
@@ -15,7 +16,7 @@ import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
         url: config.get<string>('DATABASE_URL'),
-        entities: [User, Zone, Restaurant],
+        entities: [User, Zone, Restaurant, Cuisine],
         synchronize: true,
       }),
     }),

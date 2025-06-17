@@ -5,6 +5,7 @@ import { Restaurant, DeliveryZoneType } from './entities/restaurant.entity';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { GeoJsonObject } from 'geojson';
+import { Cuisine } from 'src/cuisine/entities/cuisine.entity';
 
 interface CheckInsideZoneResult {
   inside: boolean;
@@ -24,6 +25,7 @@ export class RestaurantsService {
     deliveryZoneRadius: number | null = null,
     deliveryZone?: { coordinates?: number[][][] },
   ): Promise<object> {
+    console.log('🚀 ~ RestaurantsService ~ type:', type);
     if (type === DeliveryZoneType.CIRCLE) {
       if (!deliveryZoneRadius)
         throw new Error('Radius is required for circular delivery zone');
@@ -74,9 +76,11 @@ export class RestaurantsService {
       deliveryZoneType,
       deliveryZoneRadius,
       deliveryZone,
+      cuisines: cuisineIds,
       zoneId,
       ...rest
     } = input;
+    console.log(deliveryZoneType);
 
     const geom = await this.getDeliveryZoneGeom(
       deliveryZoneType,
@@ -92,6 +96,9 @@ export class RestaurantsService {
     });
     await this.checkInsideZone(zoneId, geom);
 
+    // Shortcut method – only IDs mapped as objects
+    const cuisines = cuisineIds.map((id) => ({ id }) as Cuisine);
+
     const restaurant = this.restaurantRepo.create({
       ...rest,
       location: { type: 'Point', coordinates: location.coordinates },
@@ -99,6 +106,7 @@ export class RestaurantsService {
       deliveryZoneRadius: deliveryZoneRadius ?? null,
       deliveryZone: geom,
       zoneId,
+      cuisines,
     });
 
     return this.restaurantRepo.save(restaurant);
@@ -118,6 +126,7 @@ export class RestaurantsService {
       deliveryZoneType,
       deliveryZoneRadius,
       deliveryZone,
+      cuisines: cuisineIds,
       zoneId,
       ...rest
     } = input;
@@ -142,16 +151,19 @@ export class RestaurantsService {
       if (geom) await this.checkInsideZone(zoneId, geom);
     }
 
+    const cuisines = cuisineIds?.map((id) => ({ id })) as Cuisine[];
+
     const restaurant = this.restaurantRepo.create({
       ...rest,
       id,
-      deliveryZoneType,
-      ...(deliveryZoneRadius !== undefined ? { deliveryZoneRadius } : {}),
-      deliveryZone: geom,
       location: location
         ? { type: 'Point', coordinates: location.coordinates }
         : undefined,
+      deliveryZoneType,
+      ...(deliveryZoneRadius !== undefined && { deliveryZoneRadius }),
+      deliveryZone: geom,
       zoneId,
+      cuisines,
     });
 
     return this.restaurantRepo.save(restaurant);

@@ -8,6 +8,11 @@ type AuthResponse {
   user: User!
 }
 
+input CreateCuisineInput {
+  name: String!
+  photo: String!
+}
+
 input CreateRestaurantInput {
   address: String!
   coverPhoto: String
@@ -41,6 +46,12 @@ input CreateZoneInput {
   title: String!
 }
 
+type Cuisine {
+  id: ID!
+  name: String!
+  photo: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -50,6 +61,7 @@ input DeliveryZoneInput {
   coordinates: [[[Float!]!]!]
 }
 
+"""Type of delivery zone: circle or polygon"""
 enum DeliveryZoneType {
   CIRCLE
   POLYGON
@@ -76,19 +88,24 @@ input LoginInput {
 }
 
 type Mutation {
+  createCuisine(createCuisineInput: CreateCuisineInput!): Cuisine!
   createRestaurant(createRestaurantInput: CreateRestaurantInput!): Restaurant!
   createUser(createUserInput: CreateUserInput!): User!
   createZone(createZoneInput: CreateZoneInput!): Zone!
   login(loginInput: LoginInput!): AuthResponse!
+  removeCuisine(id: String!): Boolean!
   removeRestaurant(id: String!): Restaurant!
   removeUser(id: String!): User!
   removeZone(id: String!): Zone!
+  updateCuisine(updateCuisineInput: UpdateCuisineInput!): Cuisine!
   updateRestaurant(updateRestaurantInput: UpdateRestaurantInput!): Restaurant!
   updateUser(updateUserInput: UpdateUserInput!): User!
   updateZone(updateZoneInput: UpdateZoneInput!): Zone!
 }
 
 type Query {
+  cuisine(id: String!): Cuisine!
+  cuisines: [Cuisine!]!
   restaurant(id: Int!): Restaurant!
   restaurants: [Restaurant!]!
   user(id: String!): User!
@@ -100,7 +117,7 @@ type Query {
 type Restaurant {
   address: String!
   coverPhoto: String
-  cuisines: [String!]!
+  cuisines: [Cuisine!]!
   deliveryZone: JSON!
   deliveryZoneRadius: Float
   deliveryZoneType: DeliveryZoneType!
@@ -126,6 +143,12 @@ type TimingEntry {
 input TimingEntryInput {
   day: String!
   times: [[String!]!]!
+}
+
+input UpdateCuisineInput {
+  id: ID!
+  name: String
+  photo: String
 }
 
 input UpdateRestaurantInput {
@@ -166,7 +189,7 @@ input UpdateZoneInput {
 
 type User {
   address: JSON
-  bussinessRegNo: String
+  businessRegNo: String
   createdAt: DateTime!
   email: String!
   emailVerified: Boolean!

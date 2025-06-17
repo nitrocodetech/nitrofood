@@ -9,6 +9,7 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
 import { DatabaseModule } from './database/database.module';
 import GraphQLJSON from 'graphql-type-json';
 import { AuthModule } from './auth/auth.module';
+import { CuisineModule } from './cuisine/cuisine.module';
 
 @Module({
   imports: [
@@ -22,11 +23,13 @@ import { AuthModule } from './auth/auth.module';
       introspection: true, // needed for Postman or GraphQL clients to fetch schema
       resolvers: { JSON: GraphQLJSON }, // register JSON scalar
     }),
+
     DatabaseModule,
     AuthModule,
     UsersModule,
     ZoneModule,
     RestaurantsModule,
+    CuisineModule,
   ],
 })
 export class AppModule {}

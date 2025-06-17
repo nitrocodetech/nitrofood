@@ -56,7 +56,7 @@ export class User {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  bussinessRegNo?: string;
+  businessRegNo?: string;
 
   @Column({ nullable: true })
   refreshToken?: string;

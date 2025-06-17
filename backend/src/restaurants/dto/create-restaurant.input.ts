@@ -1,5 +1,6 @@
 import { InputType, Field, Int, Float, ID } from '@nestjs/graphql';
 import { DeliveryZoneType } from '../entities/restaurant.entity';
+import { IsUrl } from 'class-validator';
 
 @InputType()
 export class TimingEntryInput {
@@ -52,9 +53,11 @@ export class CreateRestaurantInput {
   maxDeliveryTime: number;
 
   @Field({ nullable: true })
+  @IsUrl()
   coverPhoto?: string;
 
   @Field({ nullable: true })
+  @IsUrl()
   profilePhoto?: string;
 
   @Field(() => LocationInput)

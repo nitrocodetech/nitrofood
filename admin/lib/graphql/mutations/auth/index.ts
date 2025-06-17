@@ -6,7 +6,7 @@ mutation Login($loginInput: LoginInput!) {
     accessToken
     refreshToken
     user {
-      bussinessRegNo
+      businessRegNo
       createdAt
       email
       emailVerified

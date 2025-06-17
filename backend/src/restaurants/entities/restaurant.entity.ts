@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import GraphQLJSON from 'graphql-type-json';
+import { Cuisine } from 'src/cuisine/entities/cuisine.entity';
 import { Zone } from 'src/zone/entities/zone.entity';
 import {
   Column,
@@ -8,14 +9,19 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
   Point,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 export enum DeliveryZoneType {
-  CIRCLE = 'circle',
-  POLYGON = 'polygon',
+  CIRCLE = 'CIRCLE',
+  POLYGON = 'POLYGON',
 }
 
-registerEnumType(DeliveryZoneType, { name: 'DeliveryZoneType' });
+registerEnumType(DeliveryZoneType, {
+  name: 'DeliveryZoneType',
+  description: 'Type of delivery zone: circle or polygon',
+});
 
 @ObjectType()
 class TimingEntry {
@@ -59,9 +65,11 @@ export class Restaurant {
   @Column('float', { nullable: true })
   tax?: number;
 
-  @Field(() => [String])
+  @Field(() => [Cuisine])
+  @ManyToMany(() => Cuisine, { eager: true }) // `eager` makes it auto-fetch cuisines
+  @JoinTable()
   @Column('text', { array: true })
-  cuisines: string[];
+  cuisines: Cuisine[];
 
   @Field(() => Int)
   @Column('int')
