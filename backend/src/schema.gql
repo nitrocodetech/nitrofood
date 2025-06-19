@@ -8,6 +8,42 @@ type AuthResponse {
   user: User!
 }
 
+type Banner {
+  createdAt: DateTime!
+  description: String!
+  id: ID!
+  position: Float!
+  targetId: String
+  targetType: BannerTargetType!
+  thumbnail: String
+  title: String!
+  type: BannerType!
+  updatedAt: DateTime!
+  url: String!
+}
+
+enum BannerTargetType {
+  FOOD
+  NONE
+  RESTAURANT
+}
+
+enum BannerType {
+  IMAGE
+  VIDEO
+}
+
+input CreateBannerInput {
+  description: String!
+  position: Float! = 0
+  targetId: String
+  targetType: BannerTargetType!
+  thumbnail: String
+  title: String!
+  type: BannerType!
+  url: String!
+}
+
 input CreateCuisineInput {
   name: String!
   photo: String!
@@ -31,6 +67,19 @@ input CreateRestaurantInput {
   tax: Float
   timings: [TimingEntryInput!]
   zoneId: ID!
+}
+
+input CreateRiderInput {
+  email: String
+  licenseNumber: String
+  name: String!
+  password: String!
+  phone: String!
+  pushToken: String
+  username: String!
+  vehicleNumber: String
+  vehicleType: VehicleType
+  zoneId: String!
 }
 
 input CreateUserInput {
@@ -88,26 +137,36 @@ input LoginInput {
 }
 
 type Mutation {
+  createBanner(createBannerInput: CreateBannerInput!): Banner!
   createCuisine(createCuisineInput: CreateCuisineInput!): Cuisine!
   createRestaurant(createRestaurantInput: CreateRestaurantInput!): Restaurant!
+  createRider(createRiderInput: CreateRiderInput!): Rider!
   createUser(createUserInput: CreateUserInput!): User!
   createZone(createZoneInput: CreateZoneInput!): Zone!
   login(loginInput: LoginInput!): AuthResponse!
+  removeBanner(id: String!): Boolean!
   removeCuisine(id: String!): Boolean!
   removeRestaurant(id: String!): Restaurant!
+  removeRider(id: String!): Boolean!
   removeUser(id: String!): User!
   removeZone(id: String!): Zone!
+  updateBanner(updateBannerInput: UpdateBannerInput!): Banner!
   updateCuisine(updateCuisineInput: UpdateCuisineInput!): Cuisine!
   updateRestaurant(updateRestaurantInput: UpdateRestaurantInput!): Restaurant!
+  updateRider(updateRiderInput: UpdateRiderInput!): Rider!
   updateUser(updateUserInput: UpdateUserInput!): User!
   updateZone(updateZoneInput: UpdateZoneInput!): Zone!
 }
 
 type Query {
+  banner(id: String!): Banner!
+  banners: [Banner!]!
   cuisine(id: String!): Cuisine!
   cuisines: [Cuisine!]!
   restaurant(id: Int!): Restaurant!
   restaurants: [Restaurant!]!
+  rider(id: String!): Rider!
+  riders: [Rider!]!
   user(id: String!): User!
   users: [User!]!
   zone(id: String!): Zone!
@@ -135,6 +194,25 @@ type Restaurant {
   zone: Zone!
 }
 
+type Rider {
+  createdAt: DateTime!
+  email: String
+  hasRequested: Boolean!
+  id: ID!
+  isActive: Boolean!
+  licenseNumber: String
+  name: String!
+  password: String!
+  phone: String!
+  pushToken: String
+  requestAccepted: Boolean!
+  updatedAt: DateTime!
+  username: String!
+  vehicleNumber: String
+  vehicleType: VehicleType
+  zone: Zone!
+}
+
 type TimingEntry {
   day: String!
   times: [[String!]!]!
@@ -143,6 +221,18 @@ type TimingEntry {
 input TimingEntryInput {
   day: String!
   times: [[String!]!]!
+}
+
+input UpdateBannerInput {
+  description: String
+  id: String!
+  position: Float = 0
+  targetId: String
+  targetType: BannerTargetType
+  thumbnail: String
+  title: String
+  type: BannerType
+  url: String
 }
 
 input UpdateCuisineInput {
@@ -170,6 +260,20 @@ input UpdateRestaurantInput {
   tax: Float
   timings: [TimingEntryInput!]
   zoneId: ID
+}
+
+input UpdateRiderInput {
+  email: String
+  id: ID!
+  licenseNumber: String
+  name: String
+  password: String
+  phone: String
+  pushToken: String
+  username: String
+  vehicleNumber: String
+  vehicleType: VehicleType
+  zoneId: String
 }
 
 input UpdateUserInput {
@@ -207,9 +311,15 @@ enum UserRole {
   VENDOR
 }
 
+enum VehicleType {
+  BICYCLE
+  BIKE
+  CAR
+}
+
 type Zone {
   createdAt: DateTime!
-  description: String
+  description: String!
   id: ID!
   location: JSON!
   title: String!

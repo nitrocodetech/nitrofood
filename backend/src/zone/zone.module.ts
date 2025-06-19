@@ -10,4 +10,3 @@ import { Zone } from './entities/zone.entity';
   exports: [ZoneService],
 })
 export class ZoneModule {}
-export class UsersModule {}

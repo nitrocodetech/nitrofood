@@ -1,12 +1,11 @@
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User, UserRole } from '../users/entities/user.entity';
-import { Zone } from '../zone/entities/zone.entity';
 
 const dataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
-  entities: [User, Zone],
+  entities: [User],
   synchronize: true,
 });
 

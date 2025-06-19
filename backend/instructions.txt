@@ -1,0 +1,133 @@
+-> If rider has requested then show hasRequested true, isActive false, requestAccepted false at initial
+-> Commission Rate / Payments
+-> Postman graphql queries
+-> Push Notification - Firebase
+-> Theme
+-> Setting
+    COD
+    Stripe
+        ON/OFF
+        KEYS
+-> Theme
+-> 
+# mutation createRestaurant {
+#     createRestaurant(
+#         createRestaurantInput: {
+#             name: "Test Restaurant"
+#             email: "testrestaurant@example.com"
+#             password: "SecurePass123!"
+#             phone: "03001234567"
+#             address: "Blue Area, Islamabad"
+#             tax: 5.0
+#             cuisines: ["6b7b20ee-82b7-4859-9421-17deb6ebf0cb"]
+#             minDeliveryTime: 25
+#             maxDeliveryTime: 45
+#             coverPhoto: "https://example.com/cover.jpg"
+#             profilePhoto: "https://example.com/profile.jpg"
+#             location: { coordinates: [73.0479, 33.6844] }
+#             deliveryZoneType: CIRCLE
+#             deliveryZoneRadius: 1000
+#             timings: [
+#                 { day: "Monday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+#                 { day: "Tuesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+#                 { day: "Wednesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+#                 { day: "Thursday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+#                 { day: "Friday", times: [["10:00", "15:00"], ["18:00", "23:00"]] }
+#                 { day: "Saturday", times: [["11:00", "16:00"], ["18:00", "23:00"]] }
+#                 { day: "Sunday", times: [["12:00", "21:00"]] }
+#             ]
+#             zoneId: "7a2ead3d-412e-469b-a196-3fbd40d24db6"
+#         }
+#     ) {
+#         id
+#         address
+#         coverPhoto
+#         cuisines {
+#             id
+#             name
+#             photo
+#         }
+#         name
+#     }
+# }
+
+mutation createRestaurant {
+    createRestaurant(
+        createRestaurantInput: {
+            name: "Test Restaurant"
+            email: "testrestaurant2@example.com"
+            password: "SecurePass123!"
+            phone: "03001234567"
+            address: "Blue Area, Islamabad"
+            tax: 5.0
+            cuisines: ["6b7b20ee-82b7-4859-9421-17deb6ebf0cb"]
+            minDeliveryTime: 25
+            maxDeliveryTime: 45
+            coverPhoto: "https://example.com/cover.jpg"
+            profilePhoto: "https://example.com/profile.jpg"
+            location: { coordinates: [73.0479, 33.6844] }
+            deliveryZoneType: POLYGON
+            deliveryZone: {
+                coordinates: [
+                    [
+                        [73.0420, 33.6880]
+                        [73.0500, 33.6880]
+                        [73.0500, 33.6800]
+                        [73.0420, 33.6800]
+                        [73.0420, 33.6880]
+                    ]
+                ]
+            }
+            timings: [
+                { day: "Monday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+                { day: "Tuesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+                { day: "Wednesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+                { day: "Thursday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+                { day: "Friday", times: [["10:00", "15:00"], ["18:00", "23:00"]] }
+                { day: "Saturday", times: [["11:00", "16:00"], ["18:00", "23:00"]] }
+                { day: "Sunday", times: [["12:00", "21:00"]] }
+            ]
+            zoneId: "7a2ead3d-412e-469b-a196-3fbd40d24db6"
+        }
+    ) {
+        id
+        name
+        address
+    }
+}
+
+# NOT VALID LOCATION OF RESTAURANT INSIDE ZONE
+# mutation createRestaurant {
+#   createRestaurant(
+#     createRestaurantInput: {
+#       name: "Test Restaurant"
+#       email: "testrestaurant@example.com"
+#       password: "SecurePass123!"
+#       phone: "03001234567"
+#       address: "1600 Pennsylvania Avenue NW, Washington, DC"
+#       tax: 5.0
+#       cuisines: ["American", "Fast Food"]
+#       minDeliveryTime: 25
+#       maxDeliveryTime: 45
+#       coverPhoto: "https://example.com/cover.jpg"
+#       profilePhoto: "https://example.com/profile.jpg"
+#       location: { coordinates: [-77.0365, 38.8977] }  # Longitude, Latitude for White House, DC
+#       deliveryZoneType: CIRCLE
+#       deliveryZoneRadius: 1000
+#       timings: [
+#         { day: "Monday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+#         { day: "Tuesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+#         { day: "Wednesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+#         { day: "Thursday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+#         { day: "Friday", times: [["10:00", "15:00"], ["18:00", "23:00"]] }
+#         { day: "Saturday", times: [["11:00", "16:00"], ["18:00", "23:00"]] }
+#         { day: "Sunday", times: [["12:00", "21:00"]] }
+#       ]
+#       zoneId: "7a2ead3d-412e-469b-a196-3fbd40d24db6"
+#     }
+#   ) {
+#     id
+#     name
+#     address
+#   }
+# }

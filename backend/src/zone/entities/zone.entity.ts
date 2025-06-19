@@ -20,11 +20,10 @@ export class Zone {
   @Column()
   title: string;
 
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  description?: string;
+  @Field()
+  @Column()
+  description: string;
 
-  // Use JSON scalar to handle GeoJSON Polygon object serialization
   @Field(() => GraphQLJSON)
   @Column({
     type: 'geometry',
@@ -32,8 +31,6 @@ export class Zone {
     srid: 4326,
   })
   location: Polygon;
-
-  type: string;
 
   @Field()
   @CreateDateColumn()

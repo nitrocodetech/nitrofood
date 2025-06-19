@@ -6,6 +6,7 @@ import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { GeoJsonObject } from 'geojson';
 import { Cuisine } from 'src/cuisine/entities/cuisine.entity';
+import { CommissionRate } from 'src/commission-rate/entities/commission-rate.entity';
 
 interface CheckInsideZoneResult {
   inside: boolean;
@@ -16,6 +17,10 @@ export class RestaurantsService {
   constructor(
     @InjectRepository(Restaurant)
     private readonly restaurantRepo: Repository<Restaurant>,
+
+    @InjectRepository(CommissionRate)
+    private readonly commissionRateRepo: Repository<CommissionRate>,
+
     private readonly dataSource: DataSource,
   ) {}
 
@@ -25,7 +30,6 @@ export class RestaurantsService {
     deliveryZoneRadius: number | null = null,
     deliveryZone?: { coordinates?: number[][][] },
   ): Promise<object> {
-    console.log('🚀 ~ RestaurantsService ~ type:', type);
     if (type === DeliveryZoneType.CIRCLE) {
       if (!deliveryZoneRadius)
         throw new Error('Radius is required for circular delivery zone');
@@ -80,7 +84,6 @@ export class RestaurantsService {
       zoneId,
       ...rest
     } = input;
-    console.log(deliveryZoneType);
 
     const geom = await this.getDeliveryZoneGeom(
       deliveryZoneType,
@@ -108,8 +111,15 @@ export class RestaurantsService {
       zoneId,
       cuisines,
     });
+    const savedRestaurant = await this.restaurantRepo.save(restaurant);
 
-    return this.restaurantRepo.save(restaurant);
+    // Save commission rate for this restaurant
+    await this.commissionRateRepo.save({
+      vendorId: savedRestaurant.id,
+      percentage: 10, // default commission rate
+    });
+
+    return savedRestaurant;
   }
 
   findAll() {

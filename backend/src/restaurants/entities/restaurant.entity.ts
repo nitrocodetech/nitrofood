@@ -11,6 +11,7 @@ import {
   Point,
   ManyToMany,
   JoinTable,
+  Index,
 } from 'typeorm';
 
 export enum DeliveryZoneType {
@@ -68,7 +69,6 @@ export class Restaurant {
   @Field(() => [Cuisine])
   @ManyToMany(() => Cuisine, { eager: true }) // `eager` makes it auto-fetch cuisines
   @JoinTable()
-  @Column('text', { array: true })
   cuisines: Cuisine[];
 
   @Field(() => Int)
@@ -115,7 +115,8 @@ export class Restaurant {
   @Column('jsonb', { nullable: true })
   timings: TimingEntry[];
 
-  @Column() // foreign key column
+  @Index()
+  @Column()
   zoneId: string;
 
   // Relation to Zone

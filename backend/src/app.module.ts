@@ -10,6 +10,9 @@ import { DatabaseModule } from './database/database.module';
 import GraphQLJSON from 'graphql-type-json';
 import { AuthModule } from './auth/auth.module';
 import { CuisineModule } from './cuisine/cuisine.module';
+import { RidersModule } from './riders/riders.module';
+import { BannersModule } from './banners/banners.module';
+import { CommissionRateModule } from './commission-rate/commission-rate.module';
 
 @Module({
   imports: [
@@ -30,6 +33,9 @@ import { CuisineModule } from './cuisine/cuisine.module';
     ZoneModule,
     RestaurantsModule,
     CuisineModule,
+    RidersModule,
+    BannersModule,
+    CommissionRateModule,
   ],
 })
 export class AppModule {}
