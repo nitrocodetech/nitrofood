@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
+import GraphQLJSON from 'graphql-type-json';
 import { Zone } from 'src/zone/entities/zone.entity';
 import {
   Entity,
@@ -9,6 +10,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
+  Point,
 } from 'typeorm';
 
 export enum VehicleType {
@@ -71,6 +73,15 @@ export class Rider {
   @Field({ defaultValue: true })
   @Column({ default: true })
   requestAccepted: false;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  @Column({
+    type: 'geometry',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+    nullable: true,
+  })
+  location?: Point;
 
   @Field({ nullable: true })
   @Column({ nullable: true })

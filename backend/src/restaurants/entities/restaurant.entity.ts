@@ -6,12 +6,10 @@ import {
   Column,
   Entity,
   ManyToOne,
-  JoinColumn,
   PrimaryGeneratedColumn,
   Point,
   ManyToMany,
   JoinTable,
-  Index,
 } from 'typeorm';
 
 export enum DeliveryZoneType {
@@ -67,7 +65,7 @@ export class Restaurant {
   tax?: number;
 
   @Field(() => [Cuisine])
-  @ManyToMany(() => Cuisine, { eager: true }) // `eager` makes it auto-fetch cuisines
+  @ManyToMany(() => Cuisine, { eager: true })
   @JoinTable()
   cuisines: Cuisine[];
 
@@ -115,13 +113,10 @@ export class Restaurant {
   @Column('jsonb', { nullable: true })
   timings: TimingEntry[];
 
-  @Index()
-  @Column()
-  zoneId: string;
-
-  // Relation to Zone
   @Field(() => Zone)
-  @ManyToOne(() => Zone)
-  @JoinColumn({ name: 'zoneId' })
+  @ManyToOne(() => Zone, {
+    cascade: false,
+    eager: true,
+  })
   zone: Zone;
 }

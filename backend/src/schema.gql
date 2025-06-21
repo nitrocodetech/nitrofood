@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Addon {
+  createdAt: DateTime!
+  id: ID!
+  isAvailable: Boolean!
+  name: String!
+  price: Float!
+  updatedAt: DateTime!
+}
+
+input AddonRefInput {
+  id: String!
+}
+
 type AuthResponse {
   accessToken: String!
   refreshToken: String!
@@ -33,6 +46,29 @@ enum BannerType {
   VIDEO
 }
 
+input CategoryRefInput {
+  id: String!
+}
+
+type Coupon {
+  code: String!
+  createdAt: DateTime!
+  discountPercentage: Float!
+  expiryDate: DateTime!
+  id: ID!
+  isActive: Boolean!
+  maxDiscount: Float
+  minOrderAmount: Float!
+  updatedAt: DateTime!
+}
+
+input CreateAddonInput {
+  foodItemId: String!
+  isAvailable: Boolean! = true
+  name: String!
+  price: Float!
+}
+
 input CreateBannerInput {
   description: String!
   position: Float! = 0
@@ -44,15 +80,43 @@ input CreateBannerInput {
   url: String!
 }
 
+input CreateCouponInput {
+  code: String!
+  discountPercentage: Float!
+  expiryDate: DateTime!
+  isActive: Boolean! = true
+  maxDiscount: Float
+  minOrderAmount: Float!
+}
+
 input CreateCuisineInput {
   name: String!
   photo: String!
 }
 
+input CreateFoodCategoryInput {
+  description: String
+  image: String
+  isActive: Boolean! = true
+  name: String!
+}
+
+input CreateFoodInput {
+  addons: [AddonRefInput!]
+  category: CategoryRefInput!
+  description: String
+  isAvailable: Boolean!
+  name: String!
+  photo: String
+  price: Float!
+  restaurant: RestaurantRefInput!
+  variations: [CreateVariationInput!]!
+}
+
 input CreateRestaurantInput {
   address: String!
   coverPhoto: String
-  cuisines: [String!]!
+  cuisines: [CuisineRefInput!]!
   deliveryZone: DeliveryZoneInput
   deliveryZoneRadius: Float
   deliveryZoneType: DeliveryZoneType!
@@ -66,7 +130,7 @@ input CreateRestaurantInput {
   profilePhoto: String
   tax: Float
   timings: [TimingEntryInput!]
-  zoneId: ID!
+  zone: ZoneRefInput!
 }
 
 input CreateRiderInput {
@@ -89,6 +153,13 @@ input CreateUserInput {
   role: String!
 }
 
+input CreateVariationInput {
+  discountPrice: Float
+  isAvailable: Boolean! = true
+  name: String!
+  price: Float!
+}
+
 input CreateZoneInput {
   description: String
   location: GeoJsonPolygonInput!
@@ -99,6 +170,10 @@ type Cuisine {
   id: ID!
   name: String!
   photo: String!
+}
+
+input CuisineRefInput {
+  id: ID!
 }
 
 """
@@ -114,6 +189,30 @@ input DeliveryZoneInput {
 enum DeliveryZoneType {
   CIRCLE
   POLYGON
+}
+
+type Food {
+  addons: [Addon!]
+  category: FoodCategory!
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  isAvailable: Boolean!
+  name: String!
+  photo: String
+  price: Float!
+  restaurant: Restaurant!
+  updatedAt: DateTime!
+  variations: [Variation!]!
+}
+
+type FoodCategory {
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  image: String
+  name: String!
+  updatedAt: DateTime!
 }
 
 input GeoJsonPolygonInput {
@@ -137,21 +236,33 @@ input LoginInput {
 }
 
 type Mutation {
+  createAddon(createAddonInput: CreateAddonInput!): Addon!
   createBanner(createBannerInput: CreateBannerInput!): Banner!
+  createCoupon(createCouponInput: CreateCouponInput!): Coupon!
   createCuisine(createCuisineInput: CreateCuisineInput!): Cuisine!
+  createFood(createFoodInput: CreateFoodInput!): Food!
+  createFoodCategory(createFoodCategoryInput: CreateFoodCategoryInput!): FoodCategory!
   createRestaurant(createRestaurantInput: CreateRestaurantInput!): Restaurant!
   createRider(createRiderInput: CreateRiderInput!): Rider!
   createUser(createUserInput: CreateUserInput!): User!
   createZone(createZoneInput: CreateZoneInput!): Zone!
   login(loginInput: LoginInput!): AuthResponse!
+  removeAddon(id: String!): Boolean!
   removeBanner(id: String!): Boolean!
+  removeCoupon(id: String!): Boolean!
   removeCuisine(id: String!): Boolean!
+  removeFood(id: String!): Boolean!
+  removeFoodCategory(id: String!): Boolean!
   removeRestaurant(id: String!): Restaurant!
   removeRider(id: String!): Boolean!
   removeUser(id: String!): User!
   removeZone(id: String!): Zone!
+  updateAddon(updateAddonInput: UpdateAddonInput!): Addon!
   updateBanner(updateBannerInput: UpdateBannerInput!): Banner!
+  updateCoupon(updateCouponInput: UpdateCouponInput!): Coupon!
   updateCuisine(updateCuisineInput: UpdateCuisineInput!): Cuisine!
+  updateFood(updateFoodInput: UpdateFoodInput!): Food!
+  updateFoodCategory(updateFoodCategoryInput: UpdateFoodCategoryInput!): FoodCategory!
   updateRestaurant(updateRestaurantInput: UpdateRestaurantInput!): Restaurant!
   updateRider(updateRiderInput: UpdateRiderInput!): Rider!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -159,10 +270,18 @@ type Mutation {
 }
 
 type Query {
+  addon(id: String!): Addon!
+  addons: [Addon!]!
   banner(id: String!): Banner!
   banners: [Banner!]!
+  coupon(id: String!): Coupon!
+  coupons: [Coupon!]!
   cuisine(id: String!): Cuisine!
   cuisines: [Cuisine!]!
+  food(id: String!): Food!
+  foodCategories: [FoodCategory!]!
+  foodCategory(id: String!): FoodCategory!
+  foods: [Food!]!
   restaurant(id: Int!): Restaurant!
   restaurants: [Restaurant!]!
   rider(id: String!): Rider!
@@ -194,6 +313,10 @@ type Restaurant {
   zone: Zone!
 }
 
+input RestaurantRefInput {
+  id: String!
+}
+
 type Rider {
   createdAt: DateTime!
   email: String
@@ -201,6 +324,7 @@ type Rider {
   id: ID!
   isActive: Boolean!
   licenseNumber: String
+  location: JSON
   name: String!
   password: String!
   phone: String!
@@ -223,6 +347,14 @@ input TimingEntryInput {
   times: [[String!]!]!
 }
 
+input UpdateAddonInput {
+  foodItemId: String
+  id: String!
+  isAvailable: Boolean = true
+  name: String
+  price: Float
+}
+
 input UpdateBannerInput {
   description: String
   id: String!
@@ -235,16 +367,47 @@ input UpdateBannerInput {
   url: String
 }
 
+input UpdateCouponInput {
+  code: String
+  discountPercentage: Float
+  expiryDate: DateTime
+  id: String!
+  isActive: Boolean = true
+  maxDiscount: Float
+  minOrderAmount: Float
+}
+
 input UpdateCuisineInput {
   id: ID!
   name: String
   photo: String
 }
 
+input UpdateFoodCategoryInput {
+  description: String
+  id: String!
+  image: String
+  isActive: Boolean = true
+  name: String
+}
+
+input UpdateFoodInput {
+  addons: [AddonRefInput!]
+  category: CategoryRefInput
+  description: String
+  id: String!
+  isAvailable: Boolean
+  name: String
+  photo: String
+  price: Float
+  restaurant: RestaurantRefInput
+  variations: [CreateVariationInput!]
+}
+
 input UpdateRestaurantInput {
   address: String
   coverPhoto: String
-  cuisines: [String!]
+  cuisines: [CuisineRefInput!]
   deliveryZone: DeliveryZoneInput
   deliveryZoneRadius: Float
   deliveryZoneType: DeliveryZoneType
@@ -259,7 +422,7 @@ input UpdateRestaurantInput {
   profilePhoto: String
   tax: Float
   timings: [TimingEntryInput!]
-  zoneId: ID
+  zone: ZoneRefInput
 }
 
 input UpdateRiderInput {
@@ -311,6 +474,17 @@ enum UserRole {
   VENDOR
 }
 
+type Variation {
+  createdAt: DateTime!
+  discountPrice: Float
+  food: Food!
+  id: ID!
+  isAvailable: Boolean!
+  name: String!
+  price: Float!
+  updatedAt: DateTime!
+}
+
 enum VehicleType {
   BICYCLE
   BIKE
@@ -324,4 +498,8 @@ type Zone {
   location: JSON!
   title: String!
   updatedAt: DateTime!
+}
+
+input ZoneRefInput {
+  id: ID!
 }

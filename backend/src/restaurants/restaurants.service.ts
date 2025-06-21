@@ -5,7 +5,6 @@ import { Restaurant, DeliveryZoneType } from './entities/restaurant.entity';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { GeoJsonObject } from 'geojson';
-import { Cuisine } from 'src/cuisine/entities/cuisine.entity';
 import { CommissionRate } from 'src/commission-rate/entities/commission-rate.entity';
 
 interface CheckInsideZoneResult {
@@ -38,11 +37,11 @@ export class RestaurantsService {
 
       const result = await this.dataSource.query<{ geom: GeoJsonObject }[]>(
         `SELECT ST_AsGeoJSON(
-      ST_Buffer(
-        ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography,
-        $3
-      )::geometry
-    )::json AS geom`,
+          ST_Buffer(
+            ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography,
+            $3
+          )::geometry
+        )::json AS geom`,
         [lng, lat, deliveryZoneRadius],
       );
       return result[0].geom;
@@ -51,7 +50,11 @@ export class RestaurantsService {
     if (type === DeliveryZoneType.POLYGON) {
       if (!deliveryZone?.coordinates)
         throw new Error('Coordinates are required for polygon delivery zone');
-      return { type: 'Polygon', coordinates: deliveryZone.coordinates };
+
+      return {
+        type: 'Polygon',
+        coordinates: deliveryZone.coordinates,
+      };
     }
 
     throw new Error('Invalid delivery zone type');
@@ -80,8 +83,8 @@ export class RestaurantsService {
       deliveryZoneType,
       deliveryZoneRadius,
       deliveryZone,
-      cuisines: cuisineIds,
-      zoneId,
+      cuisines,
+      zone,
       ...rest
     } = input;
 
@@ -92,15 +95,12 @@ export class RestaurantsService {
       deliveryZone,
     );
 
-    // Ensure both location and delivery zone are inside the selected zone
-    await this.checkInsideZone(zoneId, {
+    await this.checkInsideZone(zone.id, {
       type: 'Point',
       coordinates: location.coordinates,
     });
-    await this.checkInsideZone(zoneId, geom);
 
-    // Shortcut method – only IDs mapped as objects
-    const cuisines = cuisineIds.map((id) => ({ id }) as Cuisine);
+    await this.checkInsideZone(zone.id, geom);
 
     const restaurant = this.restaurantRepo.create({
       ...rest,
@@ -108,36 +108,36 @@ export class RestaurantsService {
       deliveryZoneType,
       deliveryZoneRadius: deliveryZoneRadius ?? null,
       deliveryZone: geom,
-      zoneId,
       cuisines,
+      zone,
     });
+
     const savedRestaurant = await this.restaurantRepo.save(restaurant);
 
-    // Save commission rate for this restaurant
     await this.commissionRateRepo.save({
       vendorId: savedRestaurant.id,
-      percentage: 10, // default commission rate
+      percentage: 10, // default commission
     });
 
     return savedRestaurant;
   }
 
   findAll() {
-    return this.restaurantRepo.find({ relations: ['zone'] });
+    return this.restaurantRepo.find();
   }
 
   findOne(id: string) {
-    return this.restaurantRepo.findOne({ where: { id }, relations: ['zone'] });
+    return this.restaurantRepo.findOne({ where: { id } });
   }
 
-  async update(id: string, input: UpdateRestaurantInput & { zoneId?: string }) {
+  async update(id: string, input: UpdateRestaurantInput) {
     const {
       location,
       deliveryZoneType,
       deliveryZoneRadius,
       deliveryZone,
-      cuisines: cuisineIds,
-      zoneId,
+      cuisines,
+      zone,
       ...rest
     } = input;
 
@@ -152,16 +152,15 @@ export class RestaurantsService {
       );
     }
 
-    if (zoneId) {
+    if (zone?.id) {
       if (location)
-        await this.checkInsideZone(zoneId, {
+        await this.checkInsideZone(zone.id, {
           type: 'Point',
           coordinates: location.coordinates,
         });
-      if (geom) await this.checkInsideZone(zoneId, geom);
-    }
 
-    const cuisines = cuisineIds?.map((id) => ({ id })) as Cuisine[];
+      if (geom) await this.checkInsideZone(zone.id, geom);
+    }
 
     const restaurant = this.restaurantRepo.create({
       ...rest,
@@ -172,8 +171,8 @@ export class RestaurantsService {
       deliveryZoneType,
       ...(deliveryZoneRadius !== undefined && { deliveryZoneRadius }),
       deliveryZone: geom,
-      zoneId,
       cuisines,
+      zone,
     });
 
     return this.restaurantRepo.save(restaurant);

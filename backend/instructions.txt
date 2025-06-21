@@ -9,7 +9,11 @@
         ON/OFF
         KEYS
 -> Theme
--> 
+-> Coupon
+    Increase coupon use count after order
+
+
+
 # mutation createRestaurant {
 #     createRestaurant(
 #         createRestaurantInput: {

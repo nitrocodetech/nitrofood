@@ -3,7 +3,7 @@ import { DeliveryZoneType } from '../entities/restaurant.entity';
 import { IsUrl } from 'class-validator';
 
 @InputType()
-export class TimingEntryInput {
+class TimingEntryInput {
   @Field()
   day: string;
 
@@ -12,15 +12,27 @@ export class TimingEntryInput {
 }
 
 @InputType()
-export class DeliveryZoneInput {
-  @Field(() => [[[Float]]], { nullable: true }) // polygon coordinates
+class DeliveryZoneInput {
+  @Field(() => [[[Float]]], { nullable: true })
   coordinates?: number[][][];
 }
 
 @InputType()
-export class LocationInput {
+class LocationInput {
   @Field(() => [Float], { description: 'Longitude and Latitude' })
   coordinates: [number, number];
+}
+
+@InputType()
+class CuisineRefInput {
+  @Field(() => ID)
+  id: string;
+}
+
+@InputType()
+class ZoneRefInput {
+  @Field(() => ID)
+  id: string;
 }
 
 @InputType()
@@ -43,8 +55,8 @@ export class CreateRestaurantInput {
   @Field(() => Float, { nullable: true })
   tax?: number;
 
-  @Field(() => [String])
-  cuisines: string[];
+  @Field(() => [CuisineRefInput])
+  cuisines: CuisineRefInput[];
 
   @Field(() => Int)
   minDeliveryTime: number;
@@ -75,6 +87,6 @@ export class CreateRestaurantInput {
   @Field(() => [TimingEntryInput], { nullable: true })
   timings?: TimingEntryInput[];
 
-  @Field(() => ID)
-  zoneId: string; // relational id to zone
+  @Field(() => ZoneRefInput)
+  zone: ZoneRefInput;
 }

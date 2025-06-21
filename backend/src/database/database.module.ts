@@ -7,6 +7,11 @@ import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { Cuisine } from 'src/cuisine/entities/cuisine.entity';
 import { Rider } from 'src/riders/entities/rider.entity';
 import { Banner } from 'src/banners/entities/banner.entity';
+import { Food } from 'src/foods/entities/food.entity';
+import { Variation } from 'src/foods/entities/variation.entity';
+import { FoodCategory } from 'src/food-category/entities/food-category.entity';
+import { Addon } from 'src/addon/entities/addon.entity';
+import { Coupon } from 'src/coupons/entities/coupon.entity';
 
 @Global()
 @Module({
@@ -18,7 +23,19 @@ import { Banner } from 'src/banners/entities/banner.entity';
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
         url: config.get<string>('DATABASE_URL'),
-        entities: [User, Zone, Restaurant, Cuisine, Rider, Banner],
+        entities: [
+          User,
+          Zone,
+          Restaurant,
+          Cuisine,
+          Rider,
+          Banner,
+          Coupon,
+          Addon,
+          FoodCategory,
+          Food,
+          Variation,
+        ],
         synchronize: true,
       }),
     }),

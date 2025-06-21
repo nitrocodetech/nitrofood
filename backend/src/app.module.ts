@@ -13,6 +13,10 @@ import { CuisineModule } from './cuisine/cuisine.module';
 import { RidersModule } from './riders/riders.module';
 import { BannersModule } from './banners/banners.module';
 import { CommissionRateModule } from './commission-rate/commission-rate.module';
+import { CouponsModule } from './coupons/coupons.module';
+import { FoodsModule } from './foods/foods.module';
+import { FoodCategoryModule } from './food-category/food-category.module';
+import { AddonsModule } from './addon/addon.module';
 
 @Module({
   imports: [
@@ -36,6 +40,10 @@ import { CommissionRateModule } from './commission-rate/commission-rate.module';
     RidersModule,
     BannersModule,
     CommissionRateModule,
+    CouponsModule,
+    FoodsModule,
+    FoodCategoryModule,
+    AddonsModule,
   ],
 })
 export class AppModule {}
