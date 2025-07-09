@@ -1,5 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { VehicleType } from '../entities/rider.entity';
+import { RefInput } from 'src/common/dto/ref.input';
 
 @InputType()
 export class CreateRiderInput {
@@ -30,6 +31,6 @@ export class CreateRiderInput {
   @Field({ nullable: true })
   pushToken?: string;
 
-  @Field()
-  zoneId: string;
+  @Field(() => RefInput)
+  zone: RefInput;
 }

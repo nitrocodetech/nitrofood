@@ -11,49 +11,59 @@
 -> Theme
 -> Coupon
     Increase coupon use count after order
+-> Tax of Restaurant
+-> Stripe connect after %
+--> make review a different entity
 
 
 
-# mutation createRestaurant {
-#     createRestaurant(
-#         createRestaurantInput: {
-#             name: "Test Restaurant"
-#             email: "testrestaurant@example.com"
-#             password: "SecurePass123!"
-#             phone: "03001234567"
-#             address: "Blue Area, Islamabad"
-#             tax: 5.0
-#             cuisines: ["6b7b20ee-82b7-4859-9421-17deb6ebf0cb"]
-#             minDeliveryTime: 25
-#             maxDeliveryTime: 45
-#             coverPhoto: "https://example.com/cover.jpg"
-#             profilePhoto: "https://example.com/profile.jpg"
-#             location: { coordinates: [73.0479, 33.6844] }
-#             deliveryZoneType: CIRCLE
-#             deliveryZoneRadius: 1000
-#             timings: [
-#                 { day: "Monday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
-#                 { day: "Tuesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
-#                 { day: "Wednesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
-#                 { day: "Thursday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
-#                 { day: "Friday", times: [["10:00", "15:00"], ["18:00", "23:00"]] }
-#                 { day: "Saturday", times: [["11:00", "16:00"], ["18:00", "23:00"]] }
-#                 { day: "Sunday", times: [["12:00", "21:00"]] }
-#             ]
-#             zoneId: "7a2ead3d-412e-469b-a196-3fbd40d24db6"
-#         }
-#     ) {
-#         id
-#         address
-#         coverPhoto
-#         cuisines {
-#             id
-#             name
-#             photo
-#         }
-#         name
-#     }
-# }
+mutation CreateRestaurant {
+    createRestaurant(
+        createRestaurantInput: {
+            address: "C-13, Diamond Mall & Residency"
+            coverPhoto: "https://www.shutterstock.com/image-photo/thai-food-cover-page-restaurant-600w-2253624107.jpg"
+            cuisines: [{ id: "e25eed55-2df1-4bb1-9941-3a3f432f5488" },{id:"f953d5b7-a21f-4b91-bb72-ca4a1e3b4589"}]
+            deliveryZoneType: CIRCLE
+            deliveryZoneRadius: 3
+            email: "gulberg@gmail.com"
+            location: { coordinates: [73.14316, 33.597759] }
+            timings: [
+                { day: "Monday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+                { day: "Tuesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+                { day: "Wednesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+                { day: "Thursday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
+                { day: "Friday", times: [["10:00", "15:00"], ["18:00", "23:00"]] }
+                { day: "Saturday", times: [["11:00", "16:00"], ["18:00", "23:00"]] }
+                { day: "Sunday", times: [["12:00", "21:00"]] }
+            ]
+            zone: { id: "40ec1381-c8da-472b-9937-f921444b9797" }
+            tax: 10
+            profilePhoto: "https://freedesignfile.com/upload/2017/05/Restaurant-menu-with-black-background-vector.jpg"
+            phone: "03030827123"
+            password: "Kashmir@-1"
+            name: "The Vegivore"
+            minDeliveryTime: 10
+            maxDeliveryTime: 30
+        }
+    ) {
+        address
+        coverPhoto
+        deliveryZone
+        deliveryZoneRadius
+        deliveryZoneType
+        email
+        id
+        location
+        maxDeliveryTime
+        minDeliveryTime
+        name
+        password
+        phone
+        profilePhoto
+        tax
+    }
+}
+
 
 mutation createRestaurant {
     createRestaurant(
@@ -100,38 +110,137 @@ mutation createRestaurant {
     }
 }
 
-# NOT VALID LOCATION OF RESTAURANT INSIDE ZONE
-# mutation createRestaurant {
-#   createRestaurant(
-#     createRestaurantInput: {
-#       name: "Test Restaurant"
-#       email: "testrestaurant@example.com"
-#       password: "SecurePass123!"
-#       phone: "03001234567"
-#       address: "1600 Pennsylvania Avenue NW, Washington, DC"
-#       tax: 5.0
-#       cuisines: ["American", "Fast Food"]
-#       minDeliveryTime: 25
-#       maxDeliveryTime: 45
-#       coverPhoto: "https://example.com/cover.jpg"
-#       profilePhoto: "https://example.com/profile.jpg"
-#       location: { coordinates: [-77.0365, 38.8977] }  # Longitude, Latitude for White House, DC
-#       deliveryZoneType: CIRCLE
-#       deliveryZoneRadius: 1000
-#       timings: [
-#         { day: "Monday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
-#         { day: "Tuesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
-#         { day: "Wednesday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
-#         { day: "Thursday", times: [["10:00", "14:00"], ["17:00", "22:00"]] }
-#         { day: "Friday", times: [["10:00", "15:00"], ["18:00", "23:00"]] }
-#         { day: "Saturday", times: [["11:00", "16:00"], ["18:00", "23:00"]] }
-#         { day: "Sunday", times: [["12:00", "21:00"]] }
-#       ]
-#       zoneId: "7a2ead3d-412e-469b-a196-3fbd40d24db6"
-#     }
-#   ) {
-#     id
-#     name
-#     address
-#   }
-# }
+mutation CreateFood {
+    createFood(
+        createFoodInput: {
+            name: "The Mighty King"
+            description: "A towering beef burger stacked with double patties, melted cheddar, crispy onions, and our signature smoky sauce."
+            photo: "https://img.freepik.com/free-photo/burger-hamburger-cheeseburger_505751-3690.jpg?t=st=1751465154~exp=1751468754~hmac=4e96049de44b9abd675b43c4deb760403267aa84854a767abf22c1bb3df32803&w=2000"
+            isAvailable: true
+            restaurant: { id: "1a5cc2d2-0d6e-496d-903e-fd9f4461c6a5" }
+            category: { id: "79725195-9bfb-4446-87b5-e1d9b994d97e" }
+            variations: [{ name: "Regular", price: 500, isAvailable: true },
+            { name: "Super Slammed", price: 1000, discountPrice: 800, isAvailable: true }]
+            addons: [{id:"ce84a385-356a-4053-9efb-ca13a915a083"}]
+        }
+    ) {
+        createdAt
+        description
+        id: 5830d76e-e764-460a-acf1-91c64c11a1d6
+        isAvailable
+        name
+        photo
+        updatedAt
+    }
+}
+
+
+mutation CreateRider {
+    createRider(
+        createRiderInput: {
+            email: "hamzamushtaq840@gmail.com"
+            licenseNumber: "61102-239832-323223"
+            name: "Hamza Mushtaq"
+            password: "123123"
+            phone: "+923030827123"
+            username: "hamzamushtaq"
+            vehicleNumber: "ASX-932"
+            vehicleType: BIKE
+            zone: { id: "40ec1381-c8da-472b-9937-f921444b9797" }
+        }
+    ) {
+        createdAt
+        email
+        hasRequested
+        id
+        isActive
+        licenseNumber
+        location
+        name
+        password
+        phone
+        pushToken
+        requestAccepted
+        updatedAt
+        username
+        vehicleNumber
+        vehicleType
+    }
+}
+
+mutation CreateUser {
+    createUser(
+        createUserInput: {
+            email: "syedissam@gmail.com"
+            name: "Syed Issam"
+            password: "123123"
+            role: "CUSTOMER"
+        }
+    ) {
+        address
+        businessRegNo
+        createdAt
+        email
+        emailVerified
+        id
+        name
+        phone
+        phoneVerified
+        role
+        updatedAt
+    }
+}
+
+
+
+✅ 1. Pickup Order Flow
+PENDING
+  ↓
+ACCEPTED
+  ↓
+PREPARING
+  ↓
+READY
+  ↓
+COMPLETED
+
+Optional:
+READY → CANCELLED
+READY → FAILED
+
+
+
+🚚 2. Delivery Order Flow
+PENDING
+  ↓
+ACCEPTED
+  ↓
+PREPARING
+  ↓
+READY
+  ↓
+ASSIGNED (to rider)
+  ↓
+RIDER_ACCEPTED
+  ↓
+RIDER_PICKED
+  ↓
+DELIVERED
+  ↓
+COMPLETED
+
+Optional:
+Any status → CANCELLED
+Any status → FAILED
+
+
+
+❌ 3. Failure/Cancellation Flow (Applies to both pickup & delivery)
+PENDING → CANCELLED
+ACCEPTED → CANCELLED
+PREPARING → CANCELLED
+READY → CANCELLED
+ASSIGNED → CANCELLED
+RIDER_ACCEPTED → CANCELLED
+
+Any status → FAILED (e.g., customer didn’t show up, payment failed, delivery issue)

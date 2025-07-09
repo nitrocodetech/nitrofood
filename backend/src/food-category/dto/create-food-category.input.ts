@@ -8,9 +8,6 @@ export class CreateFoodCategoryInput {
   @Field({ nullable: true })
   description?: string;
 
-  @Field({ nullable: true })
-  image?: string;
-
   @Field({ defaultValue: true })
   isActive: boolean;
 }

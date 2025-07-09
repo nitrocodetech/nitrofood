@@ -1,6 +1,8 @@
-import { InputType, Field, Int, Float, ID } from '@nestjs/graphql';
+import { InputType, Field, Int, Float } from '@nestjs/graphql';
 import { DeliveryZoneType } from '../entities/restaurant.entity';
 import { IsUrl } from 'class-validator';
+import { RefInput } from 'src/common/dto/ref.input';
+import { LocationInput } from 'src/common/dto/location.input';
 
 @InputType()
 class TimingEntryInput {
@@ -15,24 +17,6 @@ class TimingEntryInput {
 class DeliveryZoneInput {
   @Field(() => [[[Float]]], { nullable: true })
   coordinates?: number[][][];
-}
-
-@InputType()
-class LocationInput {
-  @Field(() => [Float], { description: 'Longitude and Latitude' })
-  coordinates: [number, number];
-}
-
-@InputType()
-class CuisineRefInput {
-  @Field(() => ID)
-  id: string;
-}
-
-@InputType()
-class ZoneRefInput {
-  @Field(() => ID)
-  id: string;
 }
 
 @InputType()
@@ -55,8 +39,8 @@ export class CreateRestaurantInput {
   @Field(() => Float, { nullable: true })
   tax?: number;
 
-  @Field(() => [CuisineRefInput])
-  cuisines: CuisineRefInput[];
+  @Field(() => [RefInput])
+  cuisines: RefInput[];
 
   @Field(() => Int)
   minDeliveryTime: number;
@@ -87,6 +71,6 @@ export class CreateRestaurantInput {
   @Field(() => [TimingEntryInput], { nullable: true })
   timings?: TimingEntryInput[];
 
-  @Field(() => ZoneRefInput)
-  zone: ZoneRefInput;
+  @Field(() => RefInput)
+  zone: RefInput;
 }

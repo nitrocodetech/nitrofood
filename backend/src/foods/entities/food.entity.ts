@@ -9,7 +9,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { FoodCategory } from 'src/food-category/entities/food-category.entity';
 import { Variation } from './variation.entity';
 import { Addon } from 'src/addon/entities/addon.entity';
@@ -29,10 +29,6 @@ export class Food {
   @Field({ nullable: true })
   @Column({ nullable: true })
   description?: string;
-
-  @Field(() => Float)
-  @Column('float')
-  price: number;
 
   @Field({ nullable: true })
   @Column({ nullable: true })

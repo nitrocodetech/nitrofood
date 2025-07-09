@@ -10,7 +10,4 @@ export class CreateAddonInput {
 
   @Field({ defaultValue: true })
   isAvailable: boolean;
-
-  @Field()
-  foodItemId: string;
 }

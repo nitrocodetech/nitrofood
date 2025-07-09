@@ -1,23 +1,6 @@
-import { InputType, Field, Float } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 import { CreateVariationInput } from './create-variation.input';
-
-@InputType()
-class RestaurantRefInput {
-  @Field()
-  id: string;
-}
-
-@InputType()
-class CategoryRefInput {
-  @Field()
-  id: string;
-}
-
-@InputType()
-class AddonRefInput {
-  @Field()
-  id: string;
-}
+import { RefInput } from 'src/common/dto/ref.input';
 
 @InputType()
 export class CreateFoodInput {
@@ -27,23 +10,20 @@ export class CreateFoodInput {
   @Field({ nullable: true })
   description?: string;
 
-  @Field(() => Float)
-  price: number;
-
   @Field({ nullable: true })
   photo?: string;
 
   @Field()
   isAvailable: boolean;
 
-  @Field(() => RestaurantRefInput)
-  restaurant: RestaurantRefInput;
+  @Field(() => RefInput)
+  restaurant: RefInput;
 
-  @Field(() => CategoryRefInput)
-  category: CategoryRefInput;
+  @Field(() => RefInput)
+  category: RefInput;
 
-  @Field(() => [AddonRefInput], { nullable: true })
-  addons?: AddonRefInput[];
+  @Field(() => [RefInput], { nullable: true })
+  addons?: RefInput[];
 
   @Field(() => [CreateVariationInput])
   variations: CreateVariationInput[];

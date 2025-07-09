@@ -11,10 +11,6 @@ type Addon {
   updatedAt: DateTime!
 }
 
-input AddonRefInput {
-  id: String!
-}
-
 type AuthResponse {
   accessToken: String!
   refreshToken: String!
@@ -46,8 +42,20 @@ enum BannerType {
   VIDEO
 }
 
-input CategoryRefInput {
-  id: String!
+type Cart {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type CheckoutSessionResponse {
+  paymentIntentId: String
+  sessionId: String!
+  sessionUrl: String!
+}
+
+type Configuration {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 type Coupon {
@@ -63,7 +71,6 @@ type Coupon {
 }
 
 input CreateAddonInput {
-  foodItemId: String!
   isAvailable: Boolean! = true
   name: String!
   price: Float!
@@ -78,6 +85,22 @@ input CreateBannerInput {
   title: String!
   type: BannerType!
   url: String!
+}
+
+input CreateCartInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateCheckoutSessionInput {
+  items: [StripeItemInput!]!
+  orderId: String!
+  tip: Int!
+}
+
+input CreateConfigurationInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
 }
 
 input CreateCouponInput {
@@ -96,27 +119,52 @@ input CreateCuisineInput {
 
 input CreateFoodCategoryInput {
   description: String
-  image: String
   isActive: Boolean! = true
   name: String!
 }
 
 input CreateFoodInput {
-  addons: [AddonRefInput!]
-  category: CategoryRefInput!
+  addons: [RefInput!]
+  category: RefInput!
   description: String
   isAvailable: Boolean!
   name: String!
   photo: String
-  price: Float!
-  restaurant: RestaurantRefInput!
+  restaurant: RefInput!
   variations: [CreateVariationInput!]!
+}
+
+input CreateOrderInput {
+  cancelledBy: String
+  cancelledReason: String
+  deliveredAt: DateTime
+  deliveryAddress: String
+  deliveryFee: Float
+  deliveryInstructions: String
+  deliveryLocation: LocationInput!
+  foodItems: [OrderItemInput!]!
+  isScheduled: Boolean
+  paymentIntentId: String
+  paymentMethod: String!
+  paymentStatus: PaymentStatus
+  promoDiscount: Float
+  restaurant: RefInput!
+  rider: RefInput
+  scheduledAt: DateTime
+  status: OrderStatus
+  stripeSessionId: String
+  subTotal: Float!
+  tax: Float!
+  tip: Float
+  totalAmount: Float!
+  type: String
+  user: RefInput!
 }
 
 input CreateRestaurantInput {
   address: String!
   coverPhoto: String
-  cuisines: [CuisineRefInput!]!
+  cuisines: [RefInput!]!
   deliveryZone: DeliveryZoneInput
   deliveryZoneRadius: Float
   deliveryZoneType: DeliveryZoneType!
@@ -130,7 +178,7 @@ input CreateRestaurantInput {
   profilePhoto: String
   tax: Float
   timings: [TimingEntryInput!]
-  zone: ZoneRefInput!
+  zone: RefInput!
 }
 
 input CreateRiderInput {
@@ -143,7 +191,7 @@ input CreateRiderInput {
   username: String!
   vehicleNumber: String
   vehicleType: VehicleType
-  zoneId: String!
+  zone: RefInput!
 }
 
 input CreateUserInput {
@@ -160,6 +208,16 @@ input CreateVariationInput {
   price: Float!
 }
 
+input CreateWalletInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateWithdrawRequestInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 input CreateZoneInput {
   description: String
   location: GeoJsonPolygonInput!
@@ -170,10 +228,6 @@ type Cuisine {
   id: ID!
   name: String!
   photo: String!
-}
-
-input CuisineRefInput {
-  id: ID!
 }
 
 """
@@ -200,7 +254,6 @@ type Food {
   isAvailable: Boolean!
   name: String!
   photo: String
-  price: Float!
   restaurant: Restaurant!
   updatedAt: DateTime!
   variations: [Variation!]!
@@ -210,7 +263,6 @@ type FoodCategory {
   createdAt: DateTime!
   description: String
   id: ID!
-  image: String
   name: String!
   updatedAt: DateTime!
 }
@@ -238,35 +290,105 @@ input LoginInput {
 type Mutation {
   createAddon(createAddonInput: CreateAddonInput!): Addon!
   createBanner(createBannerInput: CreateBannerInput!): Banner!
+  createCart(createCartInput: CreateCartInput!): Cart!
+  createConfiguration(createConfigurationInput: CreateConfigurationInput!): Configuration!
   createCoupon(createCouponInput: CreateCouponInput!): Coupon!
   createCuisine(createCuisineInput: CreateCuisineInput!): Cuisine!
   createFood(createFoodInput: CreateFoodInput!): Food!
   createFoodCategory(createFoodCategoryInput: CreateFoodCategoryInput!): FoodCategory!
+
+  """Create order and get Stripe session URL"""
+  createOrder(createOrderInput: CreateOrderInput!): String!
   createRestaurant(createRestaurantInput: CreateRestaurantInput!): Restaurant!
   createRider(createRiderInput: CreateRiderInput!): Rider!
+  createStripeCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSessionResponse!
   createUser(createUserInput: CreateUserInput!): User!
+  createWallet(createWalletInput: CreateWalletInput!): Wallet!
+  createWithdrawRequest(createWithdrawRequestInput: CreateWithdrawRequestInput!): WithdrawRequest!
   createZone(createZoneInput: CreateZoneInput!): Zone!
   login(loginInput: LoginInput!): AuthResponse!
   removeAddon(id: String!): Boolean!
   removeBanner(id: String!): Boolean!
+  removeCart(id: Int!): Cart!
+  removeConfiguration(id: Int!): Configuration!
   removeCoupon(id: String!): Boolean!
   removeCuisine(id: String!): Boolean!
   removeFood(id: String!): Boolean!
   removeFoodCategory(id: String!): Boolean!
+  removeOrder(id: String!): Boolean!
   removeRestaurant(id: String!): Restaurant!
   removeRider(id: String!): Boolean!
   removeUser(id: String!): User!
+  removeWallet(id: Int!): Wallet!
+  removeWithdrawRequest(id: Int!): WithdrawRequest!
   removeZone(id: String!): Zone!
+
+  """Retry payment for an existing order (returns Stripe session URL)"""
+  retryOrderPayment(orderId: String!): String!
   updateAddon(updateAddonInput: UpdateAddonInput!): Addon!
   updateBanner(updateBannerInput: UpdateBannerInput!): Banner!
+  updateCart(updateCartInput: UpdateCartInput!): Cart!
+  updateConfiguration(updateConfigurationInput: UpdateConfigurationInput!): Configuration!
   updateCoupon(updateCouponInput: UpdateCouponInput!): Coupon!
   updateCuisine(updateCuisineInput: UpdateCuisineInput!): Cuisine!
   updateFood(updateFoodInput: UpdateFoodInput!): Food!
   updateFoodCategory(updateFoodCategoryInput: UpdateFoodCategoryInput!): FoodCategory!
+  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
   updateRestaurant(updateRestaurantInput: UpdateRestaurantInput!): Restaurant!
   updateRider(updateRiderInput: UpdateRiderInput!): Rider!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  updateWallet(updateWalletInput: UpdateWalletInput!): Wallet!
+  updateWithdrawRequest(updateWithdrawRequestInput: UpdateWithdrawRequestInput!): WithdrawRequest!
   updateZone(updateZoneInput: UpdateZoneInput!): Zone!
+}
+
+type Order {
+  deliveryLocation: JSON!
+  restaurant: Restaurant!
+  rider: Rider!
+  user: User!
+}
+
+input OrderAddonInput {
+  id: ID!
+  name: String!
+  price: Float!
+}
+
+input OrderItemInput {
+  addons: [OrderAddonInput!]
+  id: ID!
+  instructions: String
+  name: String!
+  variation: [OrderVariationInput!]!
+}
+
+enum OrderStatus {
+  ACCEPTED
+  ASSIGNED
+  CANCELLED
+  COMPLETED
+  DELIVERED
+  FAILED
+  PENDING
+  PREPARING
+  READY
+  RIDER_ACCEPTED
+  RIDER_PICKED
+}
+
+input OrderVariationInput {
+  discountPrice: Float
+  id: ID!
+  name: String!
+  price: Float!
+  quantity: Int!
+}
+
+enum PaymentStatus {
+  PAID
+  REFUNDED
+  UNPAID
 }
 
 type Query {
@@ -274,6 +396,9 @@ type Query {
   addons: [Addon!]!
   banner(id: String!): Banner!
   banners: [Banner!]!
+  cart(id: Int!): Cart!
+  configuration(id: Int!): Configuration!
+  configurations: [Configuration!]!
   coupon(id: String!): Coupon!
   coupons: [Coupon!]!
   cuisine(id: String!): Cuisine!
@@ -282,14 +407,23 @@ type Query {
   foodCategories: [FoodCategory!]!
   foodCategory(id: String!): FoodCategory!
   foods: [Food!]!
+  getPaymentStatus(sessionId: String!): Boolean!
+  order(id: String!): Order!
+  orders: [Order!]!
   restaurant(id: Int!): Restaurant!
   restaurants: [Restaurant!]!
   rider(id: String!): Rider!
   riders: [Rider!]!
   user(id: String!): User!
   users: [User!]!
+  wallet(id: Int!): Wallet!
+  withdrawRequest(id: Int!): WithdrawRequest!
   zone(id: String!): Zone!
   zones: [Zone!]!
+}
+
+input RefInput {
+  id: ID!
 }
 
 type Restaurant {
@@ -308,13 +442,18 @@ type Restaurant {
   password: String!
   phone: String
   profilePhoto: String
+  reviews: [Review!]
   tax: Float
   timings: [TimingEntry!]!
   zone: Zone!
 }
 
-input RestaurantRefInput {
-  id: String!
+type Review {
+  comment: String
+  createdAt: DateTime!
+  id: ID!
+  rating: Int!
+  restaurant: Restaurant!
 }
 
 type Rider {
@@ -337,6 +476,12 @@ type Rider {
   zone: Zone!
 }
 
+input StripeItemInput {
+  amount: Int!
+  name: String!
+  quantity: Int!
+}
+
 type TimingEntry {
   day: String!
   times: [[String!]!]!
@@ -348,7 +493,6 @@ input TimingEntryInput {
 }
 
 input UpdateAddonInput {
-  foodItemId: String
   id: String!
   isAvailable: Boolean = true
   name: String
@@ -365,6 +509,18 @@ input UpdateBannerInput {
   title: String
   type: BannerType
   url: String
+}
+
+input UpdateCartInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateConfigurationInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdateCouponInput {
@@ -386,28 +542,54 @@ input UpdateCuisineInput {
 input UpdateFoodCategoryInput {
   description: String
   id: String!
-  image: String
   isActive: Boolean = true
   name: String
 }
 
 input UpdateFoodInput {
-  addons: [AddonRefInput!]
-  category: CategoryRefInput
+  addons: [RefInput!]
+  category: RefInput
   description: String
   id: String!
   isAvailable: Boolean
   name: String
   photo: String
-  price: Float
-  restaurant: RestaurantRefInput
+  restaurant: RefInput
   variations: [CreateVariationInput!]
+}
+
+input UpdateOrderInput {
+  cancelledBy: String
+  cancelledReason: String
+  deliveredAt: DateTime
+  deliveryAddress: String
+  deliveryFee: Float
+  deliveryInstructions: String
+  deliveryLocation: LocationInput
+  foodItems: [OrderItemInput!]
+  id: String!
+  isScheduled: Boolean
+  paymentIntentId: String
+  paymentMethod: String
+  paymentStatus: PaymentStatus
+  promoDiscount: Float
+  restaurant: RefInput
+  rider: RefInput
+  scheduledAt: DateTime
+  status: OrderStatus
+  stripeSessionId: String
+  subTotal: Float
+  tax: Float
+  tip: Float
+  totalAmount: Float
+  type: String
+  user: RefInput
 }
 
 input UpdateRestaurantInput {
   address: String
   coverPhoto: String
-  cuisines: [CuisineRefInput!]
+  cuisines: [RefInput!]
   deliveryZone: DeliveryZoneInput
   deliveryZoneRadius: Float
   deliveryZoneType: DeliveryZoneType
@@ -422,7 +604,7 @@ input UpdateRestaurantInput {
   profilePhoto: String
   tax: Float
   timings: [TimingEntryInput!]
-  zone: ZoneRefInput
+  zone: RefInput
 }
 
 input UpdateRiderInput {
@@ -436,7 +618,7 @@ input UpdateRiderInput {
   username: String
   vehicleNumber: String
   vehicleType: VehicleType
-  zoneId: String
+  zone: RefInput
 }
 
 input UpdateUserInput {
@@ -445,6 +627,18 @@ input UpdateUserInput {
   name: String
   password: String
   role: String
+}
+
+input UpdateWalletInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input UpdateWithdrawRequestInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdateZoneInput {
@@ -471,7 +665,6 @@ type User {
 enum UserRole {
   ADMIN
   CUSTOMER
-  VENDOR
 }
 
 type Variation {
@@ -491,6 +684,16 @@ enum VehicleType {
   CAR
 }
 
+type Wallet {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type WithdrawRequest {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Zone {
   createdAt: DateTime!
   description: String!
@@ -498,8 +701,4 @@ type Zone {
   location: JSON!
   title: String!
   updatedAt: DateTime!
-}
-
-input ZoneRefInput {
-  id: ID!
 }

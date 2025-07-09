@@ -12,6 +12,9 @@ import { Variation } from 'src/foods/entities/variation.entity';
 import { FoodCategory } from 'src/food-category/entities/food-category.entity';
 import { Addon } from 'src/addon/entities/addon.entity';
 import { Coupon } from 'src/coupons/entities/coupon.entity';
+import { Order } from 'src/orders/entities/order.entity';
+import { Review } from 'src/restaurants/entities/review.entity';
+import { CommissionRate } from 'src/commission-rate/entities/commission-rate.entity';
 
 @Global()
 @Module({
@@ -27,6 +30,7 @@ import { Coupon } from 'src/coupons/entities/coupon.entity';
           User,
           Zone,
           Restaurant,
+          CommissionRate,
           Cuisine,
           Rider,
           Banner,
@@ -35,6 +39,8 @@ import { Coupon } from 'src/coupons/entities/coupon.entity';
           FoodCategory,
           Food,
           Variation,
+          Order,
+          Review,
         ],
         synchronize: true,
       }),

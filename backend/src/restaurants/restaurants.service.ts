@@ -115,7 +115,7 @@ export class RestaurantsService {
     const savedRestaurant = await this.restaurantRepo.save(restaurant);
 
     await this.commissionRateRepo.save({
-      vendorId: savedRestaurant.id,
+      restaurantId: savedRestaurant.id,
       percentage: 10, // default commission
     });
 

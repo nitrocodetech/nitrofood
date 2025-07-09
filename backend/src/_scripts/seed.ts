@@ -1,3 +1,4 @@
+import 'dotenv/config'; // ✅ Load .env before anything else
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User, UserRole } from '../users/entities/user.entity';
@@ -7,6 +8,7 @@ const dataSource = new DataSource({
   url: process.env.DATABASE_URL,
   entities: [User],
   synchronize: true,
+  ssl: true, // ✅ Important for Neon
 });
 
 async function seed() {

@@ -10,7 +10,9 @@ import {
   Point,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
+import { Review } from './review.entity';
 
 export enum DeliveryZoneType {
   CIRCLE = 'CIRCLE',
@@ -119,4 +121,10 @@ export class Restaurant {
     eager: true,
   })
   zone: Zone;
+
+  @Field(() => [Review], { nullable: true })
+  @OneToMany(() => Review, (review) => review.restaurant, {
+    cascade: true,
+  })
+  reviews?: Review[];
 }

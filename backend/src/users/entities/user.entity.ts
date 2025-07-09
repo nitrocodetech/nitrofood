@@ -11,7 +11,6 @@ import GraphQLJSON from 'graphql-type-json';
 export enum UserRole {
   ADMIN = 'ADMIN',
   CUSTOMER = 'CUSTOMER',
-  VENDOR = 'VENDOR',
 }
 
 registerEnumType(UserRole, { name: 'UserRole' });
@@ -53,6 +52,7 @@ export class User {
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({ type: 'json', nullable: true })
   address?: any;
+  //addresses with tags i.e HOME,OFFICE and etc
 
   @Field({ nullable: true })
   @Column({ nullable: true })

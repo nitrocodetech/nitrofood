@@ -1,0 +1,24 @@
+ZONES
+Islamabad - 067b3469-b591-4981-b440-5a9aacb83d10
+Flat - 40ec1381-c8da-472b-9937-f921444b9797
+
+CUISINES
+Fast Food - f953d5b7-a21f-4b91-bb72-ca4a1e3b4589
+Vegetables - e25eed55-2df1-4bb1-9941-3a3f432f5488
+Carnivore - 630f9ca8-d8e5-4b07-98cf-594a1c941994
+
+RESTAURANT
+The Vegivore - 1a5cc2d2-0d6e-496d-903e-fd9f4461c6a5
+
+FOOD CATEGORY
+Burgers - 79725195-9bfb-4446-87b5-e1d9b994d97e
+Keto Diet - cea4c2a1-351e-41f5-b861-ced919b25024
+
+ADDONS
+Extra Cheese - ce84a385-356a-4053-9efb-ca13a915a083
+
+RIDER
+Hamza Mushtaq - 76d2f464-b8a5-4f0e-94b5-76597bcfbdcb
+
+USER
+Syed Issam - 3eadc885-3f18-40cd-b4ce-0ede6a62e996

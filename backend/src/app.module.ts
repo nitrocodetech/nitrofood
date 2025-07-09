@@ -17,10 +17,17 @@ import { CouponsModule } from './coupons/coupons.module';
 import { FoodsModule } from './foods/foods.module';
 import { FoodCategoryModule } from './food-category/food-category.module';
 import { AddonsModule } from './addon/addon.module';
+import { CartModule } from './cart/cart.module';
+import { OrdersModule } from './orders/orders.module';
+import { WalletModule } from './wallet/wallet.module';
+import { WithdrawRequestModule } from './withdraw-request/withdraw-request.module';
+import { ConfigurationsModule } from './configurations/configurations.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -44,6 +51,11 @@ import { AddonsModule } from './addon/addon.module';
     FoodsModule,
     FoodCategoryModule,
     AddonsModule,
+    CartModule,
+    OrdersModule,
+    WalletModule,
+    WithdrawRequestModule,
+    ConfigurationsModule,
   ],
 })
 export class AppModule {}

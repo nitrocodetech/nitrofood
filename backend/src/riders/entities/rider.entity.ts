@@ -6,10 +6,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Index,
   Point,
 } from 'typeorm';
 
@@ -66,13 +64,13 @@ export class Rider {
   @Column({ default: true })
   isActive: boolean;
 
-  @Field({ defaultValue: true })
-  @Column({ default: true })
-  hasRequested: false;
+  @Field({ defaultValue: false })
+  @Column({ default: false })
+  hasRequested: boolean;
 
-  @Field({ defaultValue: true })
-  @Column({ default: true })
-  requestAccepted: false;
+  @Field({ defaultValue: false })
+  @Column({ default: false })
+  requestAccepted: boolean;
 
   @Field(() => GraphQLJSON, { nullable: true })
   @Column({
@@ -87,10 +85,6 @@ export class Rider {
   @Column({ nullable: true })
   pushToken?: string;
 
-  @Index()
-  @Column()
-  zoneId: string;
-
   @Field()
   @CreateDateColumn()
   createdAt: Date;
@@ -99,9 +93,10 @@ export class Rider {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // Relation to Zone
   @Field(() => Zone)
-  @ManyToOne(() => Zone)
-  @JoinColumn({ name: 'zoneId' })
+  @ManyToOne(() => Zone, {
+    cascade: false,
+    eager: true,
+  })
   zone: Zone;
 }
